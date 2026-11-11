@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Doctors Management</title>
+
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="doctors_management.css">
+
+    <script src="../js/auth.js" defer></script>
+</head>
+
+<body data-page="doctors">
+
+<div class="wrapper">
+
+    <aside id="sidebar"></aside>
+
+    <div class="main">
+
+        <header id="topbar"></header>
+
+        <main id="content">
+
+            <div class="doctors-page">
+
+                <!-- ================= Header ================= -->
+                <div class="page-header">
+                    <div>
+                        <h2>Doctors Management</h2>
+                        <p>Manage all doctor records in the system.</p>
+                    </div>
+
+                    <!-- <button class="btn btn-primary" id="btnAddDoctor" type="button">
+                        <svg class="icon"><use href="#i-plus"/></svg>
+                        Add Doctor
+                    </button> -->
+                </div>
+
+                <!-- ================= Toolbar ================= -->
+                <div class="toolbar">
+
+                    <div class="search-box">
+                        <svg class="icon"><use href="#i-search"/></svg>
+                        <input type="text" id="txtSearch" placeholder="Search name, account, email, phone, specialization, qualification, room...">
+                    </div>
+
+                    <select id="filterSpec">
+                        <option value="">All Specializations</option>
+                    </select>
+
+                    <select id="filterStatus">
+                        <option value="">All Status</option>
+                        <option value="1">Active</option>
+                        <option value="0">Disabled</option>
+                    </select>
+
+                </div>
+
+                <!-- ================= Table ================= -->
+                <div class="table-card">
+                    <table class="doctors-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Full Name</th>
+                                <th>Account</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Specialization</th>
+                                <th>Qualification</th>
+                                <th>Room</th>
+                                <th>Status</th>
+                                <th width="80">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <!-- doctors.js render here -->
+                        <tbody id="doctorTableBody"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- ====================================================== -->
+<!-- Add / Edit Modal -->
+<!-- ====================================================== -->
+<div class="modal" id="doctorModal">
+    <div class="modal-box wide">
+
+        <div class="modal-header">
+            <h3 id="modalTitle">Add Doctor</h3>
+            <button id="closeModal" type="button">&times;</button>
+        </div>
+
+        <div class="modal-body">
+
+            <!-- Chỉ hiện khi sửa: tài khoản tương ứng (không sửa ở đây) -->
+            <div class="account-info" id="accountInfo" hidden></div>
+
+            <div class="form-grid">
+
+                <!-- Thông tin tài khoản: chỉ hiện khi thêm mới -->
+                <div class="form-group acc">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName">
+                </div>
+
+                <div class="form-group acc">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" autocomplete="off">
+                </div>
+
+                <div class="form-group acc">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" autocomplete="new-password">
+                </div>
+
+                <div class="form-group acc">
+                    <label for="email">Email</label>
+                    <input type="email" id="email">
+                </div>
+
+                <div class="form-group acc">
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone">
+                </div>
+
+                <!-- Hồ sơ bác sĩ -->
+                <div class="form-group">
+                    <label for="specialization">Specialization</label>
+                    <input type="text" id="specialization" maxlength="100" list="specList">
+                    <datalist id="specList"></datalist>
+                </div>
+
+                <div class="form-group">
+                    <label for="qualification">Qualification</label>
+                    <input type="text" id="qualification" maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="roomNumber">Room Number</label>
+                    <input type="number" id="roomNumber" min="1" step="1">
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status">
+                        <option value="1">Active</option>
+                        <option value="0">Disabled</option>
+                    </select>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="btnCancel" type="button">Cancel</button>
+            <button class="btn btn-primary" id="btnSave" type="button">Save</button>
+        </div>
+
+    </div>
+</div>
+
+<script src="../js/auth.js"></script>
+<script src="../js/layout.js"></script>
+<script src="doctors.js"></script>
+
+</body>
+</html>

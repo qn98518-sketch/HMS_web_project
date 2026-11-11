@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Patients Management</title>
+
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="patients_management.css">
+
+    <script src="../js/auth.js" defer></script>
+</head>
+
+<body data-page="patients">
+
+<div class="wrapper">
+
+    <aside id="sidebar"></aside>
+
+    <div class="main">
+
+        <header id="topbar"></header>
+
+        <main id="content">
+
+            <div class="patients-page">
+
+                <!-- ================= Header ================= -->
+                <div class="page-header">
+                    <div>
+                        <h2>Patients Management</h2>
+                        <p>Manage all patient records in the system.</p>
+                    </div>
+
+                    <!-- <button class="btn btn-primary" id="btnAddPatient" type="button">
+                        <svg class="icon"><use href="#i-plus"/></svg>
+                        Add Patient
+                    </button> -->
+                </div>
+
+                <!-- ================= Toolbar ================= -->
+                <div class="toolbar">
+
+                    <div class="search-box">
+                        <svg class="icon"><use href="#i-search"/></svg>
+                        <input type="text" id="txtSearch" placeholder="Search name, account, email, phone, address...">
+                    </div>
+
+                    <select id="filterGender">
+                        <option value="">All Genders</option>
+                    </select>
+
+                </div>
+
+                <!-- ================= Table ================= -->
+                <div class="table-card">
+                    <table class="patients-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Full Name</th>
+                                <th>Account</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Date of Birth</th>
+                                <th>Gender</th>
+                                <th>Address</th>
+                                <th>Medical History</th>
+                                <th>Created At</th>
+                                <th width="80">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <!-- patients.js render here -->
+                        <tbody id="patientTableBody"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- ====================================================== -->
+<!-- Add / Edit Modal -->
+<!-- ====================================================== -->
+<div class="modal" id="patientModal">
+    <div class="modal-box wide">
+
+        <div class="modal-header">
+            <h3 id="modalTitle">Add Patient</h3>
+            <button id="closeModal" type="button">&times;</button>
+        </div>
+
+        <div class="modal-body">
+
+            <!-- Chỉ hiện khi sửa: tài khoản tương ứng (không sửa ở đây) -->
+            <div class="account-info" id="accountInfo" hidden></div>
+
+            <div class="form-grid">
+
+                <!-- Thông tin tài khoản: chỉ hiện khi thêm mới -->
+                <div class="form-group acc">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName">
+                </div>
+
+                <div class="form-group acc">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" autocomplete="off">
+                </div>
+
+                <div class="form-group acc">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" autocomplete="new-password">
+                </div>
+
+                <div class="form-group acc">
+                    <label for="email">Email</label>
+                    <input type="email" id="email">
+                </div>
+
+                <div class="form-group acc">
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone">
+                </div>
+
+                <!-- Hồ sơ bệnh nhân -->
+                <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob">
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender">
+                        <!-- <option value="">Not specified</option> -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" maxlength="255">
+                </div>
+
+                <div class="form-group span-2">
+                    <label for="medicalHistory">Medical History</label>
+                    <textarea id="medicalHistory" rows="4" maxlength="5000"></textarea>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="btnCancel" type="button">Cancel</button>
+            <button class="btn btn-primary" id="btnSave" type="button">Save</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- Giữ nguyên các thẻ script giống trang users_management_feature/index.html
+     (nếu auth.js của bạn nằm chỗ khác thì sửa đường dẫn dòng đầu cho đúng) -->
+<script src="../js/auth.js"></script>
+<script src="../js/layout.js"></script>
+<script src="patients.js"></script>
+
+</body>
+</html>
