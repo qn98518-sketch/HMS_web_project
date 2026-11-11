@@ -31,3 +31,5 @@ Các trang admin cũng mở trực tiếp được bằng cách double-click `ad
 1. Tạo `admin_form/patients_feature/index.html` (copy từ `products_feature/index.html`,
    đổi `data-page="patients"`), cùng `patients.js` / `patients.css` nếu cần.
 2. Thêm 1 dòng vào mảng `MENU` trong `admin_form/js/layout.js`.
+# HMS_web_project
+This project is a hospital management website which is built by a group of students who want to learn how a website acctually works. It's flaw and we'll try to improve.
