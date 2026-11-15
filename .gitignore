@@ -1,0 +1,4 @@
+.local_backups/
+uploads/avatars/*
+!uploads/avatars/.htaccess
+# database_export/ is shared with the team and intentionally tracked by Git.

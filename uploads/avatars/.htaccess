@@ -1,0 +1,10 @@
+# Ảnh đại diện chỉ được phục vụ qua admin_form/php/avatar.php (có kiểm tra đăng nhập).
+# Chặn truy cập trực tiếp và không cho thực thi bất kỳ script nào trong thư mục này.
+Options -Indexes
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>

@@ -84,6 +84,7 @@ try {
                     d.specialization, d.qualification, d.room_number, d.status
              FROM doctors d
              LEFT JOIN users u ON u.user_id = d.user_id
+             WHERE d.user_id IS NULL OR u.is_deleted = 0
              ORDER BY u.full_name, d.specialization");
         foreach ($q as $r) {
             $rows[] = [
@@ -157,7 +158,10 @@ try {
             respond(400, ["success" => false, "message" => "Missing doctor id."]);
         }
 
-        $chk = $pdo->prepare("SELECT 1 FROM doctors WHERE doctor_id = ?");
+        // Hồ sơ của tài khoản đã bị ẩn coi như không tồn tại
+        $chk = $pdo->prepare(
+            "SELECT 1 FROM doctors d LEFT JOIN users u ON u.user_id = d.user_id
+             WHERE d.doctor_id = ? AND (d.user_id IS NULL OR u.is_deleted = 0)");
         $chk->execute([$doctorId]);
         if (!$chk->fetchColumn()) {
             respond(404, ["success" => false, "message" => "Doctor not found."]);

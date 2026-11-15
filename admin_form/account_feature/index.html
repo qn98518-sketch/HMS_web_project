@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - My Account</title>
+
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="account_management.css">
+</head>
+
+<body data-page="account">
+
+<div class="wrapper">
+
+    <aside id="sidebar"></aside>
+
+    <div class="main">
+
+        <header id="topbar"></header>
+
+        <main id="content">
+
+            <div class="account-page">
+
+                <div class="page-header">
+                    <div>
+                        <h2>Account Management</h2>
+                        <p>Manage your personal information, photo and password.</p>
+                    </div>
+                </div>
+
+                <!-- ================= Avatar ================= -->
+                <section class="card acc-card">
+                    <h3>Profile photo</h3>
+                    <div class="avatar-row">
+                        <img id="accAvatar" class="avatar-xl" alt="Your avatar"
+                             src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+                        <div>
+                            <div class="btn-row">
+                                <button class="btn btn-primary" id="btnPickAvatar" type="button">Change photo</button>
+                                <button class="btn btn-secondary" id="btnRemoveAvatar" type="button">Remove photo</button>
+                            </div>
+                            <input type="file" id="avatarFile" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+                            <p class="hint">JPG, PNG, WEBP or GIF, up to 2 MB. The image is cropped to a square.</p>
+                            <p class="msg" id="avatarMsg"></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= Personal information ================= -->
+                <section class="card acc-card">
+                    <h3>Personal information</h3>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="accUsername">Username</label>
+                            <input type="text" id="accUsername" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="accRole">Role</label>
+                            <input type="text" id="accRole" disabled>
+                        </div>
+                        <div class="form-group span-2">
+                            <label for="accFullName">Full name</label>
+                            <input type="text" id="accFullName" maxlength="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="accEmail">Email</label>
+                            <input type="email" id="accEmail">
+                        </div>
+                        <div class="form-group">
+                            <label for="accPhone">Phone</label>
+                            <input type="text" id="accPhone" maxlength="10">
+                        </div>
+                    </div>
+
+                    <div class="btn-row">
+                        <button class="btn btn-primary" id="btnSaveProfile" type="button">Save changes</button>
+                    </div>
+                    <p class="msg" id="profileMsg"></p>
+                </section>
+
+                <!-- ================= Password ================= -->
+                <section class="card acc-card">
+                    <h3>Change password</h3>
+
+                    <div class="form-grid">
+                        <div class="form-group span-2">
+                            <label for="pwCurrent">Current password</label>
+                            <input type="password" id="pwCurrent" autocomplete="current-password">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwNew">New password</label>
+                            <input type="password" id="pwNew" autocomplete="new-password">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwConfirm">Confirm new password</label>
+                            <input type="password" id="pwConfirm" autocomplete="new-password">
+                        </div>
+                    </div>
+
+                    <div class="btn-row">
+                        <button class="btn btn-primary" id="btnChangePw" type="button">Change password</button>
+                    </div>
+                    <p class="msg" id="pwMsg"></p>
+                </section>
+
+                <!-- ================= Danger zone ================= -->
+                <section class="card acc-card danger-zone" id="dangerZone" hidden>
+                    <h3>Danger zone</h3>
+
+                    <div id="adminNote" class="note-info" hidden>
+                        Admin accounts cannot be locked or deleted from here.
+                    </div>
+
+                    <div id="dangerActions" hidden>
+                        <div class="danger-row">
+                            <div>
+                                <strong>Lock my account</strong>
+                                <p>You will be signed out and cannot sign in until an administrator reactivates the account.</p>
+                            </div>
+                            <button class="btn btn-secondary" id="btnLock" type="button">Lock account</button>
+                        </div>
+                        <div class="danger-row">
+                            <div>
+                                <strong>Delete my account</strong>
+                                <p>Accounts with appointment or bill history are hidden; their records are retained. Otherwise the account is permanently removed.</p>
+                            </div>
+                            <button class="btn btn-danger" id="btnDelete" type="button">Delete account</button>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- Xác nhận khóa / xóa bằng mật khẩu -->
+<div class="modal" id="confirmModal">
+    <div class="delete-box">
+        <h3 id="confirmTitle"></h3>
+        <p id="confirmText"></p>
+        <div class="form-group" style="margin-top:18px;text-align:left">
+            <label for="confirmPassword">Enter your password to confirm</label>
+            <input type="password" id="confirmPassword" autocomplete="current-password">
+        </div>
+        <div class="delete-buttons">
+            <button class="btn btn-secondary" id="confirmCancel" type="button">Cancel</button>
+            <button class="btn btn-danger" id="confirmOk" type="button">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<!-- Giữ nguyên các thẻ script giống các module khác
+     (nếu auth.js của bạn nằm chỗ khác thì sửa đường dẫn dòng đầu cho đúng) -->
+<script src="../js/auth.js" data-auth="account"></script>
+<script src="../js/layout.js"></script>
+<script src="account.js"></script>
+
+</body>
+</html>

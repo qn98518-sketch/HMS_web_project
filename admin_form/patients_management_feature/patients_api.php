@@ -107,6 +107,7 @@ try {
                     p.dob, p.gender, p.address, p.medical_history, p.created_at
              FROM patients p
              LEFT JOIN users u ON u.user_id = p.user_id
+             WHERE p.user_id IS NULL OR u.is_deleted = 0
              ORDER BY p.created_at, u.full_name");
         foreach ($q as $r) {
             $rows[] = [
@@ -181,7 +182,10 @@ try {
             respond(400, ["success" => false, "message" => "Missing patient id."]);
         }
 
-        $chk = $pdo->prepare("SELECT 1 FROM patients WHERE patient_id = ?");
+        // Hồ sơ của tài khoản đã bị ẩn coi như không tồn tại
+        $chk = $pdo->prepare(
+            "SELECT 1 FROM patients p LEFT JOIN users u ON u.user_id = p.user_id
+             WHERE p.patient_id = ? AND (p.user_id IS NULL OR u.is_deleted = 0)");
         $chk->execute([$patientId]);
         if (!$chk->fetchColumn()) {
             respond(404, ["success" => false, "message" => "Patient not found."]);

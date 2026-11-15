@@ -1,0 +1,94 @@
+{
+    "database_name": "hospital_management_system",
+    "server_version": "10.4.32-MariaDB",
+    "verified_at": "2026-11-15 14:36:45",
+    "export_tool": "mysqldump 10.19 / MariaDB 10.4.32",
+    "file": "hospital_management_system.sql",
+    "bytes": 16957,
+    "sha256": "6ac7ebfe0e6aef7e5cd6af8ff8484c40f398a12872b0ebca0188f45acb7c4c3b",
+    "includes": [
+        "database definition",
+        "table definitions",
+        "all table data",
+        "indexes",
+        "foreign keys",
+        "checks",
+        "routines",
+        "triggers",
+        "events"
+    ],
+    "snapshot": "single-transaction",
+    "table_count": 9,
+    "total_rows": 10,
+    "foreign_key_count": 17,
+    "other_objects": {
+        "routines": 0,
+        "triggers": 0,
+        "events": 0
+    },
+    "tables": [
+        {
+            "name": "appointments",
+            "engine": "InnoDB",
+            "collation": "utf8mb4_general_ci",
+            "exported_rows": 0,
+            "verified_live_rows": 0
+        },
+        {
+            "name": "bills",
+            "engine": "InnoDB",
+            "collation": "utf8mb4_general_ci",
+            "exported_rows": 1,
+            "verified_live_rows": 1
+        },
+        {
+            "name": "doctors",
+            "engine": "InnoDB",
+            "collation": "utf8mb4_general_ci",
+            "exported_rows": 2,
+            "verified_live_rows": 2
+        },
+        {
+            "name": "medical_records",
+            "engine": "InnoDB",
+            "collation": "utf8mb4_general_ci",
+            "exported_rows": 0,
+            "verified_live_rows": 0
+        },
+        {
+            "name": "patients",
+            "engine": "InnoDB",
+            "collation": "utf8mb4_general_ci",
+            "exported_rows": 2,
+            "verified_live_rows": 2
+        },
+        {
+            "name": "prescriptions",
+            "engine": "InnoDB",
+            "collation": "utf8mb4_general_ci",
+            "exported_rows": 0,
+            "verified_live_rows": 0
+        },
+        {
+            "name": "prescription_details",
+            "engine": "InnoDB",
+            "collation": "utf8mb4_general_ci",
+            "exported_rows": 0,
+            "verified_live_rows": 0
+        },
+        {
+            "name": "test_results",
+            "engine": "InnoDB",
+            "collation": "utf8mb4_general_ci",
+            "exported_rows": 0,
+            "verified_live_rows": 0
+        },
+        {
+            "name": "users",
+            "engine": "InnoDB",
+            "collation": "utf8mb4_general_ci",
+            "exported_rows": 5,
+            "verified_live_rows": 5
+        }
+    ]
+}

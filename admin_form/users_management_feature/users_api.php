@@ -28,6 +28,13 @@ function usernameExists(PDO $pdo, string $username, string $excludeId = ""): boo
     return (bool)$stmt->fetchColumn();
 }
 
+// Tài khoản có tồn tại và chưa bị ẩn (is_deleted = 0)?
+function accountVisible(PDO $pdo, string $id): bool {
+    $stmt = $pdo->prepare("SELECT 1 FROM users WHERE " . PK . " = ? AND is_deleted = 0 LIMIT 1");
+    $stmt->execute([$id]);
+    return (bool)$stmt->fetchColumn();
+}
+
 // Trả về chuỗi lỗi, hoặc null nếu hợp lệ
 function validateUser(string $fullName, string $username, string $email,
                       string $phone, string $role, int $status): ?string {
@@ -40,6 +47,7 @@ function validateUser(string $fullName, string $username, string $email,
 }
 
 require_once __DIR__ . "/../php/auth_guard.php";
+require_once __DIR__ . "/../php/avatar_helpers.php";
 
 try {
     $conn = mysqli_connect("localhost", "root", "", "hospital_management_system");
@@ -70,8 +78,10 @@ try {
     if ($action === "list") {
         $rows = [];
         $q = $pdo->query(
-            "SELECT " . PK . " AS uid, full_name, username, email, phone_number, role, user_status, create_at
-             FROM users ORDER BY create_at, username");
+            "SELECT " . PK . " AS uid, full_name, username, email, phone_number, role, user_status, create_at, avatar
+             FROM users
+             WHERE is_deleted = 0
+             ORDER BY create_at, username");
         foreach ($q as $r) {
             $rows[] = [
                 "id"         => (string)$r["uid"],
@@ -82,6 +92,7 @@ try {
                 "role"       => ucfirst($r["role"]),
                 "status"     => (int)$r["user_status"],
                 "created_at" => substr((string)$r["create_at"], 0, 10),
+                "avatar_v"   => avatarVersion($r['avatar'], (string)$r['full_name']),
             ];
         }
         respond(200, ["success" => true, "data" => $rows]);
@@ -126,6 +137,9 @@ try {
     if ($action === "update") {
         if ($id === "") {
             respond(400, ["success" => false, "message" => "Missing required fields."]);
+        }
+        if (!accountVisible($pdo, $id)) {
+            respond(404, ["success" => false, "message" => "Account not found."]);
         }
         if ($err = validateUser($fullName, $username, $email, $phone, $role, $status)) {
             respond(400, ["success" => false, "message" => $err]);
@@ -176,6 +190,10 @@ try {
     }
 
     // ---------- DELETE ----------
+    // 1) Chưa có lịch hẹn / dữ liệu nào tham chiếu tới tài khoản  => XÓA VĨNH VIỄN.
+    // 2) Đã có (khóa ngoại chặn, lỗi MySQL 1451)                   => ẨN: is_deleted = 1.
+    //    Tài khoản bị ẩn không còn hiện ở Users / Patients / Doctors management,
+    //    không đăng nhập được; chỉ còn xuất hiện trong lịch hẹn cũ (Appointments management).
     if ($action === "delete") {
         if ($id === "") {
             respond(400, ["success" => false, "message" => "Missing id."]);
@@ -183,36 +201,36 @@ try {
         if ($id === $myId) {
             respond(400, ["success" => false, "message" => "You cannot delete your own account."]);
         }
+        if (!accountVisible($pdo, $id)) {
+            respond(404, ["success" => false, "message" => "Account not found."]);
+        }
 
         try {
             $pdo->beginTransaction();
+            $avatarQuery = $pdo->prepare('SELECT avatar FROM users WHERE user_id = ? FOR UPDATE');
+            $avatarQuery->execute([$id]);
+            $oldAvatar = $avatarQuery->fetchColumn();
 
-            // 1) Xóa hồ sơ bệnh nhân của tài khoản này (nếu có).
-            //    Phải xóa trước, vì patients.user_id đang tham chiếu tới users.
+            // Hồ sơ bệnh nhân / bác sĩ phải xóa trước vì đang tham chiếu tới users.
             $pdo->prepare("DELETE FROM patients WHERE user_id = ?")->execute([$id]);
-
             $pdo->prepare("DELETE FROM doctors WHERE user_id = ?")->execute([$id]);
+            $pdo->prepare("DELETE FROM users WHERE " . PK . " = ?")->execute([$id]);
 
-            // 2) Xóa tài khoản
-            $stmt = $pdo->prepare("DELETE FROM users WHERE " . PK . " = ?");
-            $stmt->execute([$id]);
-
-            if ($stmt->rowCount() === 0) {
-                $pdo->rollBack();
-                respond(404, ["success" => false, "message" => "Account not found."]);
-            }
-
-            $pdo->commit();   // chỉ khi cả 2 bước thành công mới xóa thật
+            $pdo->commit();   // cả 3 bước thành công => đã xóa vĩnh viễn
+            removeAvatarFile($oldAvatar ?: null);
+            respond(200, ["success" => true, "mode" => "deleted", "message" => "Account deleted."]);
         } catch (PDOException $e) {
-            if ($pdo->inTransaction()) $pdo->rollBack();   // lỗi giữa chừng: giữ nguyên cả tài khoản lẫn hồ sơ
-            if ((int)($e->errorInfo[1] ?? 0) === 1451) {   // còn dữ liệu khác tham chiếu tới (lịch hẹn, bệnh án...)
-                respond(409, ["success" => false,
-                    "message" => "This account has related records (e.g. appointments) and cannot be deleted. Disable it instead."]);
-            }
-            throw $e;
+            if ($pdo->inTransaction()) $pdo->rollBack();          // giữ nguyên cả tài khoản lẫn hồ sơ
+            if ((int)($e->errorInfo[1] ?? 0) !== 1451) throw $e;  // lỗi khác: báo lỗi bình thường
         }
 
-        respond(200, ["success" => true, "message" => "Account deleted."]);
+        // Tới đây: còn dữ liệu tham chiếu (lịch hẹn...) => ẩn tài khoản thay vì xóa.
+        // user_status = 0 để chắc chắn không đăng nhập được.
+        $pdo->prepare("UPDATE users SET is_deleted = 1, user_status = 0 WHERE " . PK . " = ?")
+            ->execute([$id]);
+
+        respond(200, ["success" => true, "mode" => "hidden",
+            "message" => "This account has related records (appointments or bills), so it was hidden instead of permanently deleted."]);
     }
 
     respond(400, [

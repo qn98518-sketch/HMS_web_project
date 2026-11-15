@@ -7,9 +7,12 @@
 
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="reports.css">
+    <script src="../js/auth.js" defer></script>
 </head>
 
 <body data-page="reports">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-download" viewBox="0 0 24 24"><path d="M11 3h2v9l3-3 1.4 1.4L12 15.8l-5.4-5.4L8 9l3 3V3zM4 16h2v3h12v-3h2v5H4v-5z"/></symbol></defs></svg>
 
 <div class="wrapper">
 
@@ -24,13 +27,57 @@
             <div class="page-header">
                 <div>
                     <h2>Reports</h2>
-                    <p>This module has not been built yet.</p>
+                    <p>Monthly appointments, revenue and new patients.</p>
                 </div>
+                <button class="btn btn-secondary" type="button" id="btnExport" disabled><svg class="icon"><use href="#i-download"/></svg>Export CSV</button>
             </div>
 
-            <div class="card">
-                <p>Coming soon.</p>
+            <div class="source-notice"><strong>Revenue by bill month</strong><span>Paid amounts are grouped by bill date, excluding cancelled bills. Later payments update the original bill month; individual payment dates are not recorded.</span></div>
+            <form id="reportFilters" class="report-filters">
+                <div><label for="reportYear">Year</label><select id="reportYear"></select></div>
+                <div><label for="fromMonth">From month</label><select id="fromMonth"></select></div>
+                <div><label for="toMonth">To month</label><select id="toMonth"></select></div>
+                <button class="btn btn-primary" type="submit">Apply</button>
+                <button class="btn btn-secondary" type="button" id="btnReset">Reset</button>
+                <button class="btn btn-secondary" type="button" id="btnRefresh">Refresh</button>
+            </form>
+            <p id="filterError" class="filter-error" role="alert" hidden></p>
+            <p class="period-label" id="periodLabel" role="status">Loading reports...</p>
+            <p class="data-note" id="dataNote"></p>
+
+            <div class="report-summary">
+                <article class="metric-card"><div class="metric-heading"><h3>Appointments</h3><svg class="icon"><use href="#i-calendar"/></svg></div><strong id="totalAppointments">—</strong><p id="appointmentsComparison"></p></article>
+                <article class="metric-card"><div class="metric-heading"><h3>Revenue by bill month</h3><svg class="icon"><use href="#i-bill"/></svg></div><strong id="totalRevenue">—</strong><p id="revenueComparison"></p></article>
+                <article class="metric-card"><div class="metric-heading"><h3>New patients</h3><svg class="icon"><use href="#i-patient"/></svg></div><strong id="totalPatients">—</strong><p id="patientsComparison"></p></article>
             </div>
+
+            <div class="report-charts">
+                <section class="chart-panel" aria-labelledby="appointmentsTitle"><h3 id="appointmentsTitle">Appointments by month</h3><p class="chart-unit">Appointments (count)</p><div id="appointmentsChart" class="chart-host"></div></section>
+                <section class="chart-panel" aria-labelledby="revenueTitle"><h3 id="revenueTitle">Revenue by bill month</h3><p class="chart-unit" id="revenueUnit">Amount (same currency as Bills)</p><div id="revenueChart" class="chart-host"></div></section>
+                <section class="chart-panel" aria-labelledby="patientsTitle"><h3 id="patientsTitle">New patients by month</h3><p class="chart-unit">Patients (count)</p><div id="patientsChart" class="chart-host"></div></section>
+            </div>
+            <p class="chart-hint">Select a chart point to inspect a month. Exact figures are also available in the table below.</p>
+            <div id="monthDetail" class="month-detail" role="status" hidden></div>
+
+            <section class="monthly-section" aria-labelledby="monthlyTitle">
+                <div class="section-heading"><h3 id="monthlyTitle">Monthly breakdown</h3><span id="rowCount"></span></div>
+                <div class="table-card">
+                    <table class="reports-table">
+                        <thead><tr><th scope="col">Month</th><th scope="col" class="number">Appointments</th><th scope="col" class="number">Revenue by bill month</th><th scope="col" class="number">New patients</th></tr></thead>
+                        <tbody id="monthlyTableBody"></tbody>
+                        <tfoot id="monthlyTableFoot"></tfoot>
+                    </table>
+                </div>
+            </section>
+            <details class="metric-notes"><summary>Metric definitions and sources</summary><ul>
+                <li><strong>Appointments:</strong> number of scheduled appointments in each month, across all statuses.</li>
+                <li><strong>Revenue by bill month:</strong> current paid amounts on non-cancelled bills, grouped by bill date. This is not cash received during that month. Amounts use the same currency as Bills.</li>
+                <li><strong>New patients:</strong> patient profiles first created in each month, counted once in their creation month.</li>
+                <li>Sources: Appointments, Bills and Patients. Existing records are counted regardless of current account role, lock status or soft deletion.</li>
+                <li>Comparisons use the same months of the previous year and are omitted for incomplete or future periods. A dash means unavailable data; zero means no matching records.</li>
+                <li>The current month is in progress. Future scheduled appointments can appear; future revenue and new-patient months are left blank.</li>
+            </ul></details>
+            <noscript><p class="filter-error">Enable JavaScript to view reports.</p></noscript>
 
         </main>
 
@@ -39,6 +86,7 @@
 </div>
 
 <script src="../js/layout.js"></script>
+<script src="reports.js"></script>
 
 </body>
 </html>

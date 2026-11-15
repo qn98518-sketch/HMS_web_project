@@ -1,0 +1,49 @@
+/* Avatar trong bảng Users và trong khung sửa tài khoản */
+[hidden] { display:none !important; }
+
+.avatar-sm{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    object-fit:cover;
+    background:#e2e8f0;
+    vertical-align:middle;
+    margin-right:10px;
+    flex:0 0 32px;
+}
+
+.avatar-edit{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+    padding:14px 16px;
+    background:#f8fafc;
+    border-radius:10px;
+}
+
+.avatar-edit img{
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    object-fit:cover;
+    background:#e2e8f0;
+    border:2px solid #e5e7eb;
+}
+
+.avatar-edit .btn-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.avatar-edit .btn{
+    padding:8px 14px;
+    font-size:14px;
+}
+
+.avatar-edit small{
+    display:block;
+    margin-top:8px;
+    color:#94a3b8;
+}

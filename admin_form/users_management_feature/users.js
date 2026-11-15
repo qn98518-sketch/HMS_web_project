@@ -48,6 +48,7 @@
 
     let editIndex   = -1;
     let deleteIndex = -1;
+    let avatarBusy  = false;
 
     //============================
     // Elements
@@ -98,7 +99,7 @@
             return `
             <tr>
                 <td>${index + 1}</td>
-                <td>${esc(u.full_name)}</td>
+                <td><img class="avatar-sm" src="${esc(window.hmsUserAvatar.src(u))}" alt="" loading="lazy">${esc(u.full_name)}</td>
                 <td>${esc(u.username)}</td>
                 <td>${esc(u.email)}</td>
                 <td>${esc(u.phone)}</td>
@@ -143,7 +144,9 @@
     // Add / Edit
     //============================
     function openAdd() {
+        if (avatarBusy) return;
         editIndex = -1;
+        $("userAvatarBox").hidden = true;
         modalTitle.textContent = "Add Account";
         clearForm();
         userModal.classList.add("open");
@@ -151,8 +154,11 @@
     }
 
     function openEdit(index) {
+        if (avatarBusy) return;
         editIndex = index;
         const u = users[index];
+        $("userAvatarBox").hidden = false;
+        $("userAvatarImg").src = window.hmsUserAvatar.src(u);
 
         modalTitle.textContent = "Edit Account";
 
@@ -167,10 +173,11 @@
         userModal.classList.add("open");
     }
 
-    function closeModal()  { userModal.classList.remove("open"); }
+    function closeModal()  { if (!avatarBusy) userModal.classList.remove("open"); }
     function closeDelete() { deleteModal.classList.remove("open"); }
 
     async function save() {
+        if (avatarBusy) return;
 
         const fullName = f.fullName.value.trim();
         const username = f.username.value.trim();
@@ -228,6 +235,33 @@
     //============================
     // Events
     //============================
+    async function changeAvatar(file) {
+        if (avatarBusy || editIndex < 0 || !users[editIndex]) return;
+        const targetId = users[editIndex].id;
+        avatarBusy = true;
+        const controls = ['btnUserAvatar', 'btnUserAvatarRemove', 'btnSave', 'closeModal', 'btnCancel'];
+        controls.forEach(id => { $(id).disabled = true; });
+        try {
+            const result = file ? await window.hmsUserAvatar.upload(targetId, file) : await window.hmsUserAvatar.remove(targetId);
+            if (!result.ok) { if (result.message) alert(result.message); return; }
+            await loadUsers();
+            editIndex = users.findIndex(user => user.id === targetId);
+            if (editIndex >= 0) $("userAvatarImg").src = window.hmsUserAvatar.src(users[editIndex]);
+            else userModal.classList.remove('open');
+            if (window.hmsRefreshMe) window.hmsRefreshMe();
+        } finally {
+            avatarBusy = false;
+            controls.forEach(id => { $(id).disabled = false; });
+        }
+    }
+    $("btnUserAvatar").onclick = () => $("userAvatarFile").click();
+    $("userAvatarFile").onchange = () => {
+        const file = $("userAvatarFile").files[0];
+        $("userAvatarFile").value = '';
+        if (file) changeAvatar(file);
+    };
+    $("btnUserAvatarRemove").onclick = () => changeAvatar(null);
+
     $("btnAddUser").onclick = openAdd;
     $("closeModal").onclick = closeModal;
     $("btnCancel").onclick  = closeModal;
@@ -238,7 +272,9 @@
         const data = new FormData();
         data.append("action", "delete");
         data.append("id", users[deleteIndex].id);
-        if (await callApi(data)) {
+        const result = await callApi(data);
+        if (result) {
+            if (result.mode === "hidden") alert(result.message);
             await loadUsers();
             closeDelete();
         }

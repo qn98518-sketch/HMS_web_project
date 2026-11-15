@@ -1,10 +1,13 @@
 (function () {
-    const BASE      = "/SDLC/Hospital_Management_System_new/Hospital_Management_System";
-    const CHECK_URL = BASE + "/admin_form/php/check_auth.php";
-    const LOGIN_URL = BASE + "/login_feature/index.html";
+    const BASE      = new URL("../../", document.currentScript.src);
+    const personalAccount = document.currentScript.dataset.auth === 'account';
+    const CHECK_URL = new URL(personalAccount ? "admin_form/php/account_api.php?action=me" : "admin_form/php/check_auth.php", BASE).href;
+    const LOGIN_URL = new URL("login_feature/index.html", BASE).href;
     const INTERVAL  = 5000;          // 5 giây hỏi server một lần
+    const REQUEST_TIMEOUT = 8000;
 
     let kicked = false;
+    let checking = false;
 
     function goLogin(message) {
         if (kicked) return;
@@ -19,11 +22,16 @@
     );
 
     async function check(isFirst) {
+        if (checking || kicked) return;
+        checking = true;
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
         try {
             const res = await fetch(CHECK_URL, {
                 method: "GET",
                 credentials: "same-origin",
-                cache: "no-store"
+                cache: "no-store",
+                signal: controller.signal
             });
 
             if (res.status === 401) {
@@ -41,6 +49,9 @@
             console.error("Authentication error:", error);
             if (isFirst) goLogin("");         // giữ hành vi cũ ở lần kiểm tra đầu tiên
             // các lần sau: bỏ qua lỗi mạng tạm thời, 5 giây sau thử lại
+        } finally {
+            clearTimeout(timeout);
+            checking = false;
         }
     }
 

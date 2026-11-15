@@ -27,13 +27,13 @@ function requireAdmin(mysqli $conn): void {
     }
 
     $stmt = mysqli_prepare($conn,
-        "SELECT role, user_status FROM users WHERE " . PK . " = ? LIMIT 1");
+        "SELECT role, user_status, is_deleted FROM users WHERE " . PK . " = ? LIMIT 1");
     mysqli_stmt_bind_param($stmt, "s", $uid);     // "s" vì user_id là UUID (chuỗi)
     mysqli_stmt_execute($stmt);                   // bắt buộc phải có dòng này
     $row = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 
     // Đã từng đăng nhập hợp lệ nhưng nay bị thay đổi: báo cho họ biết lý do
-    if (!$row)                          forceLogout("Your account has been deleted.", "ACCOUNT_REVOKED");
+    if (!$row || (int)$row["is_deleted"] === 1) forceLogout("Your account has been deleted.", "ACCOUNT_REVOKED");
     if ((int)$row["user_status"] !== 1) forceLogout("Your account has been locked.", "ACCOUNT_REVOKED");
     if ($row["role"] !== "admin")       forceLogout("You no longer have admin permission.", "ACCOUNT_REVOKED");
 }

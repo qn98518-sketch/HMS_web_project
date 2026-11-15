@@ -27,6 +27,8 @@
         // { key: "products",  label: "Products",         icon: "box",   href: "products_feature/index.html" },
         { key: "doctors",  label: "Doctors management",  icon: "doctor",  href: "doctors_managements_feature/index.html" },
         { key: "patients", label: "Patients management", icon: "patient", href: "patients_management_feature/index.html" },
+        { key: "appointments", label: "Appointments management", icon: "calendar", href: "appointments_feature/index.html" },
+        { key: "bills", label: "Bills management", icon: "bill", href: "bills_feature/index.html" },
         { key: "reports",   label: "Reports",          icon: "chart", href: "reports_feature/index.html" }
     ];
 
@@ -34,6 +36,7 @@
     const SPRITE = `
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
       <defs>
+        <symbol id="i-bill" viewBox="0 0 24 24"><path d="M5 2h14v20l-3-2-4 2-4-2-3 2V2zm2 2v14.3l1-.7 4 2 4-2 1 .7V4H7zm2 3h6v2H9V7zm0 4h6v2H9v-2zm0 4h4v2H9v-2z"/></symbol>
         <symbol id="i-home"   viewBox="0 0 24 24"><path d="M12 3 2 12h3v9h5v-6h4v6h5v-9h3z"/></symbol>
         <symbol id="i-users"  viewBox="0 0 24 24"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM9 13c-3.3 0-7 1.7-7 4v3h14v-3c0-2.3-3.7-4-7-4zm8 .1c-.4 0-.8 0-1.2.1 1.4 1 2.2 2.3 2.2 3.8v3h6v-3c0-2-3.4-3.9-7-3.9z"/></symbol>
         <symbol id="i-box"    viewBox="0 0 24 24"><path d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2zm0 2.2 5.9 2.9L12 10 6.1 7.1 12 4.2zM5 8.8l6 3v7.4l-6-3V8.8zm8 10.4v-7.4l6-3v7.4l-6 3z"/></symbol>
@@ -44,6 +47,7 @@
         <symbol id="i-trash"  viewBox="0 0 24 24"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zM5 9h14l-1 12H6L5 9zm4 2v8h2v-8H9zm4 0v8h2v-8h-2z"/></symbol>
         <symbol id="i-doctor"  viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM4 21v-1.5c0-2.9 3.6-4.5 8-4.5s8 1.6 8 4.5V21H4zm7.3-5.6v1.5H9.8v1.4h1.5v1.5h1.4v-1.5h1.5v-1.4h-1.5v-1.5h-1.4z"/></symbol>
         <symbol id="i-patient" viewBox="0 0 24 24"><path d="M2 5h2v14H2zM4 15h18v2H4zM20 17h2v2h-2zM8 9.5a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4zM11 11h7a3 3 0 0 1 3 3v1H11z"/></symbol>
+        <symbol id="i-calendar" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M7 2h2v2h6V2h2v2h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3V2zM5 9v10h14V9H5zm2 2h4v4H7v-4z"/></symbol>
       </defs>
     </svg>`;
 
@@ -82,5 +86,9 @@
         const collapsed = document.body.classList.toggle("collapse");
         try { localStorage.setItem(STORE_KEY, collapsed ? "1" : "0"); } catch (e) {}
     };
+
+    const userMenuScript = document.createElement('script');
+    userMenuScript.src = BASE + 'js/usermenu.js';
+    document.head.appendChild(userMenuScript);
 
 })();

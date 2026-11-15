@@ -41,7 +41,7 @@ if (!$conn) {
     ]);
 }
 
-$sql = "SELECT user_id AS uid, username, user_password, role, user_status
+$sql = "SELECT user_id AS uid, username, user_password, role, user_status, is_deleted
         FROM users
         WHERE username = ?";
 
@@ -61,6 +61,11 @@ mysqli_stmt_execute($stmt);
 
 $result = mysqli_stmt_get_result($stmt);
 $row = mysqli_fetch_assoc($result);
+
+// Tài khoản đã bị ẩn (xóa mềm): coi như không tồn tại
+if ($row && (int)$row["is_deleted"] === 1) {
+    $row = null;
+}
 
 if ($row && $row["user_status"] !== 1) {
     mysqli_stmt_close($stmt);

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Appointments Management</title>
+
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="appointments_management.css">
+
+    <script src="../js/auth.js" defer></script>
+</head>
+
+<body data-page="appointments">
+
+<!-- Icon riêng của module này (xem chi tiết, hủy lịch) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 5C6.5 5 2.7 9 1.5 12c1.2 3 5 7 10.5 7s9.3-4 10.5-7C21.3 9 17.5 5 12 5zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12 19 6.4 17.6 5 12 10.6z"/></symbol>
+  </defs>
+</svg>
+
+<div class="wrapper">
+
+    <aside id="sidebar"></aside>
+
+    <div class="main">
+
+        <header id="topbar"></header>
+
+        <main id="content">
+
+            <div class="appointments-page">
+
+                <!-- ================= Header ================= -->
+                <div class="page-header">
+                    <div>
+                        <h2>Appointments Management</h2>
+                        <p>Create, edit and monitor appointments. Final approval belongs to reception.</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="btnAddAppointment" type="button">
+                        <svg class="icon"><use href="#i-plus"/></svg>
+                        Add Appointment
+                    </button>
+                </div>
+
+                <!-- ================= Status chips ================= -->
+                <div class="status-chips" id="statusChips"></div>
+
+                <!-- ================= Toolbar ================= -->
+                <div class="toolbar">
+
+                    <div class="search-box">
+                        <svg class="icon"><use href="#i-search"/></svg>
+                        <input type="text" id="txtSearch" placeholder="Search patient, doctor, reason...">
+                    </div>
+
+                    <select id="filterDoctor">
+                        <option value="">All Doctors</option>
+                    </select>
+
+                    <select id="filterResponse">
+                        <option value="">Any Response</option>
+                        <option value="pending">Awaiting</option>
+                        <option value="accepted">Accepted</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="overridden">Rejected &amp; overridden</option>
+                    </select>
+
+                    <label class="date-filter">From <input type="date" id="dateFrom"></label>
+                    <label class="date-filter">To <input type="date" id="dateTo"></label>
+
+                    <button class="btn btn-secondary" id="btnClear" type="button">Clear</button>
+
+                </div>
+
+                <!-- ================= Table ================= -->
+                <div class="table-card">
+                    <table class="appointments-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date &amp; Time</th>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Visit Reason</th>
+                                <th>Status</th>
+                                <th>Doctor Response</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <!-- appointments.js render here -->
+                        <tbody id="appointmentTableBody"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- ====================================================== -->
+<!-- View Modal -->
+<!-- ====================================================== -->
+<div class="modal" id="viewModal">
+    <div class="modal-box wide">
+        <div class="modal-header">
+            <h3>Appointment Details</h3>
+            <button type="button" data-close="viewModal">&times;</button>
+        </div>
+        <div class="modal-body" id="viewBody"></div>
+        <div class="modal-footer" id="viewFooter"></div>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- Add / Edit Modal -->
+<!-- ====================================================== -->
+<div class="modal" id="apptModal">
+    <div class="modal-box wide">
+        <div class="modal-header">
+            <h3 id="apptModalTitle">Add Appointment</h3>
+            <button type="button" data-close="apptModal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+
+            <!-- Chỉ hiện khi sửa: lịch đang sửa (bệnh nhân không đổi được) -->
+            <div class="account-info" id="editInfo" hidden></div>
+
+            <div class="form-grid">
+
+                <div class="form-group span-2" id="patientGroup">
+                    <label for="apptPatient">Patient</label>
+                    <select id="apptPatient"></select>
+                </div>
+
+                <div class="form-group span-2">
+                    <label for="apptDoctor">Doctor</label>
+                    <select id="apptDoctor"></select>
+                </div>
+
+                <div class="form-group">
+                    <label for="apptDatetime">Date &amp; Time</label>
+                    <input type="datetime-local" id="apptDatetime">
+                </div>
+
+                <div class="form-group">
+                    <label for="apptReason">Visit Reason</label>
+                    <input type="text" id="apptReason" maxlength="255">
+                </div>
+
+            </div>
+
+            <div class="note-warn" id="editWarn" hidden></div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-close="apptModal">Cancel</button>
+            <button class="btn btn-primary" type="button" id="btnSaveAppt">Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- Cancel Modal -->
+<!-- ====================================================== -->
+<div class="modal" id="cancelModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Cancel Appointment</h3>
+            <button type="button" data-close="cancelModal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="account-info" id="cancelInfo"></div>
+            <p>Are you sure you want to cancel this appointment? This cannot be undone.</p>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-close="cancelModal">Keep Appointment</button>
+            <button class="btn btn-danger" type="button" id="btnConfirmCancel">Cancel Appointment</button>
+        </div>
+    </div>
+</div>
+
+<script src="../js/layout.js"></script>
+<script src="appointments.js"></script>
+
+</body>
+</html>

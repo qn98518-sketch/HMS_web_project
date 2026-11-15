@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="users_management.css">
-    <script src="/SDLC/Hospital_Management_System_new/Hospital_Management_System/admin_form/js/auth.js" defer></script>
+    <link rel="stylesheet" href="users_avatar.css">
+    <script src="../js/auth.js" defer></script>
 </head>
 
 <body data-page="users">
@@ -105,6 +106,18 @@
 
         <div class="modal-body">
 
+            <div class="avatar-edit" id="userAvatarBox" hidden>
+                <img id="userAvatarImg" alt="User avatar">
+                <div>
+                    <div class="btn-row">
+                        <button class="btn btn-secondary" id="btnUserAvatar" type="button">Change photo</button>
+                        <button class="btn btn-secondary" id="btnUserAvatarRemove" type="button">Remove photo</button>
+                    </div>
+                    <input type="file" id="userAvatarFile" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+                    <small>JPG, PNG, WEBP or GIF, up to 2 MB. Photo changes are saved immediately.</small>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="fullName">Full Name</label>
                 <input type="text" id="fullName">
@@ -167,6 +180,7 @@
 
         <h3>Delete Account</h3>
         <p>Are you sure you want to delete this account?</p>
+        <p style="margin-top:10px;font-size:13px">Accounts with appointments, bills or other related records are hidden instead of permanently deleted.</p>
 
         <div class="delete-buttons">
             <button class="btn btn-secondary" id="cancelDelete" type="button">Cancel</button>
@@ -177,6 +191,7 @@
 </div>
 
 <script src="../js/layout.js"></script>
+<script src="users_avatar.js"></script>
 <script src="users.js"></script>
 
 </body>
