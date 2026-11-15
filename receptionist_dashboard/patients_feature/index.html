@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receptionist Panel - Patients Reception</title>
+
+    <link rel="stylesheet" href="../../admin_form/css/layout.css">
+    <link rel="stylesheet" href="../../admin_form/css/common.css">
+    <link rel="stylesheet" href="patients.css">
+</head>
+
+<body data-page="patients">
+
+<div class="wrapper">
+
+    <aside id="sidebar"></aside>
+
+    <div class="main">
+
+        <header id="topbar"></header>
+
+        <main id="content">
+
+            <div class="patients-page">
+
+                <!-- Header -->
+                <div class="page-header">
+                    <div>
+                        <h2>Patients Reception</h2>
+                        <p>Register walk-in patients and search administrative information.</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="btnRegisterPatient" type="button">
+                        <svg class="icon"><use href="#i-plus"/></svg>
+                        Register Patient
+                    </button>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="toolbar">
+                    <div class="search-box">
+                        <svg class="icon"><use href="#i-search"/></svg>
+                        <input type="text" id="txtSearch" placeholder="Search by patient name or phone number...">
+                    </div>
+
+                    <select id="filterGender">
+                        <option value="">All Genders</option>
+                    </select>
+
+                    <button class="btn btn-secondary" id="btnRefresh" type="button">Refresh</button>
+                </div>
+
+                <!-- Table -->
+                <div class="table-card">
+                    <table class="patients-table">
+                        <thead>
+                            <tr>
+                                <th width="50">#</th>
+                                <th>Full Name</th>
+                                <th>Account</th>
+                                <th>Phone Number</th>
+                                <th>Date of Birth</th>
+                                <th>Gender</th>
+                                <th>Address</th>
+                                <th width="90">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientTableBody">
+                            <tr>
+                                <td colspan="8" class="text-center">Loading patients...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- Modal: Register / Edit Patient -->
+<div class="modal" id="patientModal">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h3 id="modalTitle">Register Patient</h3>
+            <button id="closeModal" class="btn-close" type="button">&times;</button>
+        </div>
+
+        <form id="patientForm">
+            <div class="modal-body">
+                <input type="hidden" id="patientId" name="id">
+
+                <!-- Full Name (Only for create) -->
+                <div class="form-group" id="groupFullName">
+                    <label for="fullName">Full Name <span class="required">*</span></label>
+                    <input type="text" id="fullName" name="full_name" placeholder="e.g. Nguyen Van A" required>
+                </div>
+
+                <!-- Phone -->
+                <div class="form-group">
+                    <label for="phone">Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" placeholder="10 digits (e.g. 0912345678)" maxlength="10" required>
+                </div>
+
+                <!-- Email (Optional, create only) -->
+                <div class="form-group" id="groupEmail">
+                    <label for="email">Email (Optional)</label>
+                    <input type="email" id="email" name="email" placeholder="patient@example.com">
+                </div>
+
+                <!-- Date of Birth (Create only) -->
+                <div class="form-group" id="groupDob">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob" name="dob">
+                </div>
+
+                <!-- Gender (Create only) -->
+                <div class="form-group" id="groupGender">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender">
+                        <option value="">Select Gender</option>
+                    </select>
+                </div>
+
+                <!-- Address -->
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" rows="3" placeholder="Residential address (e.g. 123 Nguyen Trai, Ha Noi)"></textarea>
+                </div>
+
+                <div class="alert-box" id="modalAlert" style="display: none;"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btnCancel">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="btnSave">Save Patient</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script src="patients.js?v=2"></script>
+<script src="../js/layout.js?v=5"></script>
+
+</body>
+</html>

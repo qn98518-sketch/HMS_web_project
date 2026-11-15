@@ -98,6 +98,12 @@ if ($row && password_verify(
             "redirect" => "../admin_form/homepage.html"
             // "redirect" => "../admin_form/php/check_auth.php"
         ]);
+    } elseif ($row["role"] === "receptionist") {
+        respond(200, [
+            "success" => true,
+            "message" => "Login successful! Redirecting to receptionist dashboard...",
+            "redirect" => "../receptionist_dashboard/receptionist_dashboard.html"
+        ]);
     } elseif ($row["role"] === "doctor") {
         respond(200, [
             "success" => true,

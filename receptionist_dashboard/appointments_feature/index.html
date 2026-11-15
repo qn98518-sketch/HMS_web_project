@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receptionist Panel - Appointments Management</title>
+
+    <link rel="stylesheet" href="../../admin_form/css/layout.css">
+    <link rel="stylesheet" href="../../admin_form/css/common.css">
+    <link rel="stylesheet" href="appointments.css">
+</head>
+
+<body data-page="appointments">
+
+<div class="wrapper">
+
+    <aside id="sidebar"></aside>
+
+    <div class="main">
+
+        <header id="topbar"></header>
+
+        <main id="content">
+
+            <div class="appointments-page">
+
+                <!-- Header -->
+                <div class="page-header">
+                    <div>
+                        <h2>Appointments & Review Desk</h2>
+                        <p>Coordinate patient appointments, review doctor responses, and manage visit schedules.</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="btnBookAppointment" type="button">
+                        <svg class="icon"><use href="#i-plus"/></svg>
+                        Book Walk-in Appointment
+                    </button>
+                </div>
+
+                <!-- Status Chips Filter -->
+                <div class="status-chips">
+                    <div class="chip on" data-status="">All <span class="count" id="cntAll">0</span></div>
+                    <div class="chip" data-status="pending">Pending Review <span class="count" id="cntPending">0</span></div>
+                    <div class="chip" data-status="confirmed">Confirmed <span class="count" id="cntConfirmed">0</span></div>
+                    <div class="chip" data-status="rejected">Rejected <span class="count" id="cntRejected">0</span></div>
+                    <div class="chip" data-status="completed">Completed <span class="count" id="cntCompleted">0</span></div>
+                    <div class="chip" data-status="cancelled">Cancelled <span class="count" id="cntCancelled">0</span></div>
+                    <div class="chip" data-status="no_show">No-Show <span class="count" id="cntNoShow">0</span></div>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="toolbar">
+                    <div class="search-box">
+                        <svg class="icon"><use href="#i-search"/></svg>
+                        <input type="text" id="txtSearch" placeholder="Search patient, doctor, reason...">
+                    </div>
+
+                    <select id="filterDoctor">
+                        <option value="">All Doctors</option>
+                    </select>
+
+                    <div class="date-filter">
+                        <label for="filterDate">Date:</label>
+                        <input type="date" id="filterDate">
+                    </div>
+
+                    <button class="btn btn-secondary" id="btnRefresh" type="button">Refresh</button>
+                </div>
+
+                <!-- Appointments Table -->
+                <div class="table-card">
+                    <table class="appointments-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Patient</th>
+                                <th>Assigned Doctor</th>
+                                <th>Visit Reason</th>
+                                <th>Doctor Response</th>
+                                <th>Appointment Status</th>
+                                <th>Review Info</th>
+                                <th width="140">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointmentTableBody">
+                            <tr class="empty-row">
+                                <td colspan="8">Loading appointments...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- Modal: Book Walk-In Appointment -->
+<div class="modal" id="createModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Book Walk-In Appointment</h3>
+            <button class="btn-close" type="button" data-close="createModal">&times;</button>
+        </div>
+
+        <form id="createForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="createPatient">Select Patient <span class="required">*</span></label>
+                    <select id="createPatient" name="patient_id" required>
+                        <option value="">-- Choose Patient --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="createDoctor">Select Doctor <span class="required">*</span></label>
+                    <select id="createDoctor" name="doctor_id" required>
+                        <option value="">-- Choose Doctor --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="createDatetime">Appointment Date & Time <span class="required">*</span></label>
+                    <input type="datetime-local" id="createDatetime" name="appointment_datetime" required>
+                    <small id="slotHint" style="display: block; margin-top: 4px; color: #64748b; font-size: 12px;"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="createReason">Visit Reason</label>
+                    <textarea id="createReason" name="visit_reason" rows="2" maxlength="255" placeholder="Reason for medical consultation (max 255 chars)"></textarea>
+                </div>
+
+                <div class="alert-box" id="createAlert" style="display: none;"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close="createModal">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="btnSubmitCreate">Book Appointment</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Review / Manage Appointment Action -->
+<div class="modal" id="reviewModal">
+    <div class="modal-box wide">
+        <div class="modal-header">
+            <h3 id="reviewModalTitle">Review Appointment</h3>
+            <button class="btn-close" type="button" data-close="reviewModal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Appointment Summary -->
+            <div class="detail-grid" id="appointmentDetailGrid"></div>
+
+            <input type="hidden" id="actionAppointmentId">
+
+            <!-- Actions container dynamically displayed based on appointment state -->
+            <div id="actionContainer"></div>
+
+            <div class="alert-box" id="reviewAlert" style="display: none; margin-top: 14px;"></div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close="reviewModal">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Reschedule / Edit Appointment -->
+<div class="modal" id="editModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Reschedule Appointment</h3>
+            <button class="btn-close" type="button" data-close="editModal">&times;</button>
+        </div>
+
+        <form id="editForm">
+            <div class="modal-body">
+                <input type="hidden" id="editAppointmentId" name="id">
+
+                <div class="form-group">
+                    <label for="editDoctor">Assigned Doctor <span class="required">*</span></label>
+                    <select id="editDoctor" name="doctor_id" required></select>
+                </div>
+
+                <div class="form-group">
+                    <label for="editDatetime">Appointment Date & Time <span class="required">*</span></label>
+                    <input type="datetime-local" id="editDatetime" name="appointment_datetime" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editReason">Visit Reason</label>
+                    <textarea id="editReason" name="visit_reason" rows="2" maxlength="255"></textarea>
+                </div>
+
+                <p style="font-size: 13px; color: #b45309; background: #fffbeb; padding: 10px; border-radius: 6px; border: 1px solid #fef3c7;">
+                    ⚠️ Note: Changing the doctor or scheduled time will reset the doctor's response and require a new review.
+                </p>
+
+                <div class="alert-box" id="editAlert" style="display: none;"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close="editModal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="appointments.js?v=2"></script>
+<script src="../js/layout.js?v=5"></script>
+
+</body>
+</html>

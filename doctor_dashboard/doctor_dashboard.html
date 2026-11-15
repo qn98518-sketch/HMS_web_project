@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Panel - Dr. Minh Quân Nguyễn</title>
+    <link rel="stylesheet" href="../admin_form/css/layout.css">
+    <link rel="stylesheet" href="../admin_form/css/common.css">
+    <style>
+        .doctor-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .doc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            padding: 20px 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+        .doc-header h2 { margin: 0 0 6px 0; color: #0f172a; }
+        .doc-header p { margin: 0; color: #64748b; font-size: 14px; }
+        .badge-pending { background: #f59e0b; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 12px; }
+        .badge-accepted { background: #10b981; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 12px; }
+        .badge-rejected { background: #ef4444; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 12px; }
+        .badge-confirmed { background: #16a34a; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 12px; }
+        .card-table { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .table th, .table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+        .table th { background: #f8fafc; font-weight: 600; color: #475569; }
+        .btn-group { display: inline-flex; gap: 6px; }
+    </style>
+</head>
+<body style="background: #f8fafc; font-family: system-ui, -apple-system, sans-serif;">
+
+<div class="doctor-container">
+
+    <div class="doc-header">
+        <div>
+            <h2>Doctor Panel — Dr. Minh Quân Nguyễn</h2>
+            <p>Specialization: Internal Medicine | Role: Doctor</p>
+        </div>
+        <div>
+            <a href="../login_feature/index.html" class="btn btn-secondary">Log Out</a>
+        </div>
+    </div>
+
+    <div class="card-table">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+            <h3 style="margin:0; font-size: 18px;">My Assigned Appointments</h3>
+            <button class="btn btn-secondary" id="btnRefresh">Refresh</button>
+        </div>
+
+        <p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">
+            💡 <strong>Integration Rule:</strong> When you Accept or Reject an appointment, its status remains <em>Pending</em> until Receptionist (Trung) reviews and confirms it.
+        </p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Appointment Time</th>
+                    <th>Patient Name</th>
+                    <th>Contact</th>
+                    <th>Visit Reason</th>
+                    <th>My Response</th>
+                    <th>Overall Status</th>
+                    <th width="180">Doctor Action</th>
+                </tr>
+            </thead>
+            <tbody id="appTableBody">
+                <tr><td colspan="7" style="text-align:center;">Loading appointments...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const API = "doctor_api.php";
+    const tbody = document.getElementById("appTableBody");
+    const btnRefresh = document.getElementById("btnRefresh");
+
+    async function loadAppointments() {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>`;
+        try {
+            const res = await fetch(`${API}?action=list`);
+            if (res.status === 401) {
+                alert("Session expired. Please log in.");
+                window.location.href = "../login_feature/index.html";
+                return;
+            }
+            const json = await res.json();
+            if (json.success) {
+                renderTable(json.data || []);
+            } else {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red;">${json.message}</td></tr>`;
+            }
+        } catch (e) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red;">Connection error.</td></tr>`;
+        }
+    }
+
+    function renderTable(list) {
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#64748b;">No appointments assigned to you.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = list.map(a => {
+            const canRespond = (a.appointment_status === "pending" && a.doctor_response === "pending");
+            let actionHtml = `<span style="color:#94a3b8; font-size:12px;">No action needed</span>`;
+
+            if (canRespond) {
+                actionHtml = `
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-primary btn-accept" data-id="${a.appointment_id}">Accept</button>
+                        <button class="btn btn-sm btn-danger btn-reject" data-id="${a.appointment_id}">Reject</button>
+                    </div>
+                `;
+            } else if (a.appointment_status === "pending" && a.doctor_response === "accepted") {
+                actionHtml = `<span style="color:#10b981; font-size:12px; font-weight:600;">Accepted — Awaiting Receptionist</span>`;
+            } else if (a.appointment_status === "pending" && a.doctor_response === "rejected") {
+                actionHtml = `<span style="color:#ef4444; font-size:12px; font-weight:600;">Rejected by you</span>`;
+            }
+
+            return `
+                <tr>
+                    <td><strong>${escapeHtml(a.appointment_datetime)}</strong></td>
+                    <td><strong>${escapeHtml(a.patient_name)}</strong></td>
+                    <td>${escapeHtml(a.patient_phone || 'N/A')}</td>
+                    <td>${escapeHtml(a.visit_reason || '—')}</td>
+                    <td>
+                        <span class="badge-${a.doctor_response}">${escapeHtml(a.doctor_response)}</span>
+                        ${a.doctor_reject_reason ? `<br><small style="color:#ef4444">${escapeHtml(a.doctor_reject_reason)}</small>` : ''}
+                    </td>
+                    <td><span class="badge-${a.appointment_status}">${escapeHtml(a.appointment_status)}</span></td>
+                    <td>${actionHtml}</td>
+                </tr>
+            `;
+        }).join("");
+
+        document.querySelectorAll(".btn-accept").forEach(b => {
+            b.addEventListener("click", () => sendResponse(b.dataset.id, "accepted"));
+        });
+
+        document.querySelectorAll(".btn-reject").forEach(b => {
+            b.addEventListener("click", () => {
+                const reason = prompt("Please enter rejection reason (mandatory):");
+                if (!reason || !reason.trim()) {
+                    alert("Rejection reason is required.");
+                    return;
+                }
+                sendResponse(b.dataset.id, "rejected", reason.trim());
+            });
+        });
+    }
+
+    async function sendResponse(id, decision, rejectReason = "") {
+        const formData = new FormData();
+        formData.append("action", "respond");
+        formData.append("id", id);
+        formData.append("decision", decision);
+        if (rejectReason) formData.append("reject_reason", rejectReason);
+
+        try {
+            const res = await fetch(API, { method: "POST", body: formData });
+            const result = await res.json();
+            alert(result.message);
+            loadAppointments();
+        } catch (e) {
+            alert("Error sending response.");
+        }
+    }
+
+    btnRefresh.addEventListener("click", loadAppointments);
+
+    function escapeHtml(str) {
+        return String(str || "").replace(/[&<>'"]/g, tag => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            "'": '&#39;',
+            '"': '&quot;'
+        }[tag] || tag));
+    }
+
+    loadAppointments();
+});
+</script>
+
+</body>
+</html>
