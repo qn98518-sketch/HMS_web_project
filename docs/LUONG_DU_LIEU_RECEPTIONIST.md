@@ -1,6 +1,6 @@
 # TÀI LIỆU LUỒNG DỮ LIỆU PHÂN HỆ LỄ TÂN (RECEPTIONIST MODULE)
 **Dự án:** Hệ Thống Quản Lý Bệnh Viện (Hospital Management System - HMS)  
-**Thành viên đảm nhiệm:** Bạn A — Lễ tân (Receptionist)  
+**Thành viên đảm nhiệm:** Nguyễn Đức Trung — Lễ tân (Receptionist)  
 **Phạm vi:** Tiếp nhận bệnh nhân, Điều phối lịch hẹn (2 trạng thái), Quản lý hóa đơn & Thu tiền quầy.
 
 ---
