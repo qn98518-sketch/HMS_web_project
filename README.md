@@ -49,8 +49,8 @@ Hospital_Management_System/
 ├── admin_form/                             # Phân hệ Quản trị viên (Admin - Quân/gốc)
 ├── database_export/                        # Bản sao lưu cơ sở dữ liệu mẫu
 └── docs/                                   # Tài liệu dự án & Hợp đồng API
-    ├── API_FOR_TEAM.md                     # Hợp đồng API thống nhất lịch hẹn giữa 3 bạn
-    └── LUONG_DU_LIEU_RECEPTIONIST.md       # Luồng dữ liệu chi tiết bằng tiếng Việt
+    ├── API_FOR_TEAM.md                     # API thống nhất của team
+    └── LUONG_DU_LIEU_RECEPTIONIST.md       # Luồng dữ liệu chi tiết 
 ```
 
 ---
