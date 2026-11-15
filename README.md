@@ -46,7 +46,7 @@ Hospital_Management_System/
 │       ├── bills_management.css
 │       ├── bills_service.php
 │       └── bills_api.php
-├── admin_form/                             # Phân hệ Quản trị viên (Admin - Bạn B/gốc)
+├── admin_form/                             # Phân hệ Quản trị viên (Admin - Quân/gốc)
 ├── database_export/                        # Bản sao lưu cơ sở dữ liệu mẫu
 └── docs/                                   # Tài liệu dự án & Hợp đồng API
     ├── API_FOR_TEAM.md                     # Hợp đồng API thống nhất lịch hẹn giữa 3 bạn
