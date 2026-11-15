@@ -1,118 +1,120 @@
-# Hospital Management System
+# Hospital Management System (HMS) — Receptionist Module
 
-Hướng dẫn chia việc cho team: [Module Receptionist, Doctor, Patient và luồng lịch hẹn](docs/HUONG_DAN_CHIA_MODULE_THEO_ROLE.md).
+Phân hệ **Lễ tân (Receptionist)** thuộc Dự án Hệ thống Quản lý Bệnh viện (HMS).  
+Nhánh phát triển: **`Trung_receptionist_module`**  
+Thành viên phụ trách: **Bạn A — Lễ tân (Receptionist)**
+
+---
+
+## 1. Tổng quan Phân hệ Lễ tân
+
+Phân hệ Lễ tân là "Cửa ngõ tiếp nhận và điều phối hành chính" của bệnh viện, đảm nhận 3 mảng chức năng cốt lõi:
+1. **Tiếp nhận bệnh nhân tại quầy (Patients Reception):** Đón tiếp bệnh nhân vãng lai, tạo hồ sơ mới, tra cứu hành chính và chỉnh sửa thông tin liên lạc.
+2. **Điều phối & Duyệt lịch hẹn (Appointments Desk):** Quản lý toàn bộ lịch hẹn quầy, áp dụng mô hình duyệt 2 trạng thái (*Doctor Response* vs *Appointment Status*).
+3. **Quản lý hóa đơn & Thu tiền (Bills & Payments):** Lập hóa đơn dịch vụ, ghi nhận các đợt thanh toán (Tiền mặt, Thẻ, Chuyển khoản) và quản lý công nợ chính xác.
+
+---
+
+## 2. Cấu trúc Thư mục
 
 ```
 Hospital_Management_System/
-├── login_feature/                  (giữ nguyên)
-│   ├── index.html
-│   ├── style.css
-│   ├── login_back_end.php          -> admin chuyển tới ../admin_form/homepage.html
-│   └── login_pics/
-└── admin_form/
-    ├── homepage.html               Dashboard (trang vào sau khi đăng nhập)
-    ├── css/
-    │   ├── layout.css              Sidebar + header + vùng nội dung (dùng chung)
-    │   └── common.css              Button, badge, table-card, modal, form (dùng chung)
-    ├── js/
-    │   └── layout.js               Dựng sidebar/header/icon cho mọi trang + danh sách MENU
-    ├── images/logo.png
-    ├── users_management_feature/
-    │   ├── index.html
-    │   ├── users.js
-    │   └── users_management.css
-    ├── products_feature/index.html     (khung trống)
-    └── reports_feature/index.html      (khung trống)
+├── login_feature/                          # Luồng xác thực đăng nhập chung
+│   ├── index.html                          # Giao diện đăng nhập
+│   └── login_back_end.php                  # Xử lý đăng nhập và điều hướng theo role
+├── receptionist_dashboard/                 # ⭐ TOÀN BỘ PHÂN HỆ LỄ TÂN (BẠN A)
+│   ├── receptionist_dashboard.html         # Trang chủ điều khiển của Lễ tân (Dashboard)
+│   ├── js/
+│   │   ├── layout.js                       # Render Sidebar, Topbar và Sprite Icon
+│   │   └── usermenu.js                     # Menu thông tin tài khoản & đăng xuất của Lễ tân
+│   ├── php/
+│   │   ├── auth_guard.php                  # Bảo vệ API: bắt buộc role 'receptionist'
+│   │   └── check_auth.php                  # Kiểm tra phiên làm việc đăng nhập
+│   ├── patients_feature/                   # Module Tiếp nhận bệnh nhân tại quầy
+│   │   ├── index.html
+│   │   ├── patients.js
+│   │   ├── patients.css
+│   │   └── patients_api.php
+│   ├── appointments_feature/               # Module Điều phối & Duyệt lịch hẹn quầy
+│   │   ├── index.html
+│   │   ├── appointments.js
+│   │   ├── appointments.css
+│   │   └── appointments_api.php
+│   └── bills_feature/                      # Module Hóa đơn & Thu tiền tại quầy
+│       ├── index.html
+│       ├── bills.js
+│       ├── bills_management.css
+│       ├── bills_service.php
+│       └── bills_api.php
+├── admin_form/                             # Phân hệ Quản trị viên (Admin - Bạn B/gốc)
+├── database_export/                        # Bản sao lưu cơ sở dữ liệu mẫu
+└── docs/                                   # Tài liệu dự án & Hợp đồng API
+    ├── API_FOR_TEAM.md                     # Hợp đồng API thống nhất lịch hẹn giữa 3 bạn
+    └── LUONG_DU_LIEU_RECEPTIONIST.md       # Luồng dữ liệu chi tiết bằng tiếng Việt
 ```
 
-## Chạy
-Đặt folder vào `htdocs` của XAMPP rồi mở `http://localhost/Hospital_Management_System/login_feature/`.
-Các trang admin cũng mở trực tiếp được bằng cách double-click `admin_form/homepage.html`.
+---
 
-## Thêm module mới (vd: Patients)
-1. Tạo `admin_form/patients_feature/index.html` (copy từ `products_feature/index.html`,
-   đổi `data-page="patients"`), cùng `patients.js` / `patients.css` nếu cần.
-2. Thêm 1 dòng vào mảng `MENU` trong `admin_form/js/layout.js`.
-## Appointments Management & xóa tài khoản
-Chạy `sql_migrations/01_users_is_deleted.sql` trong phpMyAdmin (một lần, sau khi sao lưu DB).
-- Module `admin_form/appointments_feature/` dùng đúng các cột của bảng `appointments` hiện tại.
-- Xóa tài khoản: chưa có lịch hẹn thì xóa vĩnh viễn; đã có lịch hẹn (khóa ngoại chặn) thì đặt `users.is_deleted = 1`.
-  Tài khoản bị ẩn không hiện ở Users / Patients / Doctors management và không đăng nhập được;
-  chỉ còn hiện tên trong lịch hẹn cũ ở Appointments management.
+## 3. Các Chức Năng Chi Tiết Của Lễ Tân
 
-## Bills Management
-- Mở `admin_form/bills_feature/` từ sidebar hoặc Dashboard bằng tài khoản Admin.
-- Dùng bảng `bills` hiện có: `bill_id`, `patient_id`, `appointment_id`, `total_amount`,
-  `paid_amount`, `payment_method`, `payment_status`, `bill_date`, `due_date`, `notes`.
-  Không cần thêm cột hay thay đổi schema.
-- Tạo hóa đơn cho bệnh nhân đang ở role `patient`, tài khoản hoạt động/chưa bị ẩn;
-  vẫn hỗ trợ hồ sơ bệnh nhân không liên kết tài khoản. Lịch hẹn là tùy chọn và phải
-  thuộc đúng bệnh nhân. Hồ sơ/tài khoản đã đổi role vẫn được hiển thị trong hóa đơn cũ.
-- Hóa đơn mới có thể ghi nhận khoản đã trả ban đầu. Trạng thái tự tính: chưa trả là
-  `Unpaid` (kể cả hóa đơn tổng 0), trả một phần là `Partially Paid`, trả đủ là `Paid`.
-- Sửa tổng tiền, hạn trả và ghi chú; không đổi bệnh nhân/lịch hẹn sau khi tạo.
-  Tổng tiền không được thấp hơn số đã trả. Hạn trả không được trước ngày lập hóa đơn.
-- `Record Payment` cộng khoản thu vào `paid_amount`, chặn trả vượt dư nợ. Các thao tác
-  sử dụng transaction, khóa dòng và kiểm tra phiên bản dữ liệu để tránh ghi đè/thu trùng
-  từ một form cũ. Tiền được xử lý bằng số nguyên đơn vị 0.01 để tránh sai số số thực.
-- Chỉ hủy hóa đơn chưa thu tiền; hóa đơn hủy được giữ để tra cứu và không thể sửa/thu tiếp.
-- Schema hiện chỉ lưu tổng đã thu và phương thức thu gần nhất; chưa có lịch sử từng lần
-  thanh toán, hoàn tiền, chi tiết dịch vụ hay đơn vị tiền tệ. Giao diện không tự gán tiền tệ.
-- Bộ lọc gồm trạng thái, phương thức, ngày lập, quá hạn và tìm kiếm; tổng tiền trên trang
-  tính theo các hóa đơn đang lọc, loại trừ hóa đơn đã hủy.
+### 3.1. Tiếp nhận bệnh nhân tại quầy (`patients_feature`)
+- **Đăng ký tại quầy:** Nhập họ tên, ngày sinh, giới tính, SĐT, địa chỉ. Hệ thống tự động mở Database Transaction tạo đồng thời `users` (gán cứng role `patient`, mật khẩu ngẫu nhiên băm an toàn, sinh username duy nhất dạng `patient_XXXXX`) và `patients`.
+- **Tra cứu hành chính:** Tìm kiếm nhanh theo Họ tên hoặc SĐT. Chỉ trả về thông tin hành chính công khai.
+- **Sửa hành chính:** Chỉ được phép sửa SĐT (`users.phone_number` tối đa 10 số theo schema) và địa chỉ (`patients.address`).
+- **Ranh giới an toàn:** Tuyệt đối không cho phép Lễ tân nhập hay đọc tiền sử bệnh (`medical_history`), không sửa mật khẩu, role hoặc trạng thái tài khoản bệnh nhân.
 
-## Reports (MySQL)
-- Trang `admin_form/reports_feature/index.html` lấy số liệu thật từ `reports_api.php`,
-  chỉ tài khoản Admin còn hiệu lực được truy cập. Mở qua localhost/XAMPP sau khi đăng nhập.
-- Lịch hẹn: đếm theo `appointments.appointment_datetime`, gồm tất cả trạng thái.
-- Doanh thu theo tháng hóa đơn: tổng `bills.paid_amount` nhóm theo `bills.bill_date`, bỏ
-  hóa đơn `Cancelled`. Schema chưa có ngày thu tiền của từng khoản thanh toán nên đây
-  không phải dòng tiền thực thu trong tháng. Thu thêm tiền sẽ cập nhật tháng lập hóa đơn cũ.
-  Hóa đơn đã thu nhưng thiếu ngày lập được loại khỏi thống kê tháng và có thông báo số lượng.
-- Bệnh nhân mới: đếm hồ sơ theo `patients.created_at`, không lọc role/trạng thái tài khoản
-  hiện tại; giữ thống kê của hồ sơ xóa mềm. Hồ sơ đã xóa vĩnh viễn không còn trong DB để đếm.
-- Đơn vị tiền giữ nguyên như Bills; backend trả số nguyên đơn vị 0.01 để tính tổng chính xác.
-- Chọn năm và khoảng tháng rồi Apply; Refresh tải lại đúng khoảng đang xem. Reset về năm
-  hiện tại từ tháng 1 đến tháng hiện tại theo giờ DB. Năm chọn lấy từ dữ liệu và năm hiện tại.
-- Tháng không có bản ghi hiện 0; tháng tương lai để trống doanh thu/bệnh nhân mới nhưng
-  vẫn hiện lịch hẹn đã đặt. Không so sánh cùng kỳ khi khoảng xem có tháng chưa hoàn tất.
-- Có biểu đồ, tổng hợp, chi tiết theo tháng và CSV theo bộ lọc. Không có dữ liệu mẫu dự phòng
-  nếu API lỗi.
+### 3.2. Điều phối & Duyệt lịch hẹn (`appointments_feature`)
+- **Mô hình 2 trạng thái độc lập:**
+  - Trạng thái Bác sĩ (`doctor_response`): `pending` ➔ `accepted` hoặc `rejected`.
+  - Trạng thái Lịch hẹn (`appointment_status`): `pending` ➔ `confirmed` / `rejected` / `cancelled` / `no_show`.
+- **Bàn duyệt lịch (Approval Desk):**
+  - **Approve:** Lễ tân chỉ duyệt chuyển sang `Confirmed` khi Bác sĩ đã phản hồi `Accepted`. Lưu người duyệt (`reviewed_by`) từ session và giờ duyệt (`reviewed_at`).
+  - **Override Approve (Ngoại lệ):** Khi Bác sĩ từ chối (`rejected`) nhưng có thỏa thuận tiếp nhận đặc biệt tại quầy, Lễ tân kích hoạt duyệt ngoại lệ và bắt buộc phải nhập ghi chú điều phối (`review_note`).
+  - **Reject:** Từ chối lịch hẹn và lưu lý do.
+  - **Mark No-show:** Đánh dấu bệnh nhân vắng mặt, chỉ áp dụng cho lịch đang `Confirmed` và thời gian hẹn đã qua trong quá khứ.
+  - **Reschedule:** Khi đổi ngày/giờ khám, hệ thống tự động reset `doctor_response = 'pending'` và xóa kết quả duyệt cũ để Bác sĩ xác nhận lại giờ mới.
+- **Ranh giới an toàn:** Lễ tân không đọc bất kỳ dữ liệu chẩn đoán hay phác đồ điều trị nào của Bác sĩ.
 
-## Avatar và Account Management
-- Đã tích hợp gói `avatar_account_feature`: ảnh đại diện/menu tài khoản trên header,
-  trang `admin_form/account_feature/`, và đổi/gỡ ảnh của người dùng trong Users Management.
-- Migration `sql_migrations/03_user_avatar.sql` thêm `users.avatar VARCHAR(255) NULL`;
-  có thể chạy lại an toàn. DB đã được sao lưu vào `.local_backups/` trước khi áp dụng.
-  Thư mục sao lưu bị chặn HTTP và được loại khỏi Git.
-- Tài khoản chưa có ảnh dùng avatar chữ cái đầu tên. JPG/PNG/GIF/WEBP tối đa 2 MB,
-  tối đa 16 triệu pixel; ảnh được cắt vuông và mã hóa lại thành JPEG 256×256.
-- Nếu Apache chưa bật GD, hệ thống dùng PHP CLI của XAMPP với `-d extension=gd`
-  chỉ cho tiến trình xử lý ảnh. Không sửa `php.ini` toàn máy. Cần cho phép `proc_open`
-  và có `php.exe` cùng thư mục với `php.ini`; nếu GD đã bật thì xử lý trực tiếp.
-- Ảnh chỉ được đọc qua `admin_form/php/avatar.php` sau khi xác thực. Người dùng
-  chỉ xem/sửa ảnh của mình; Admin có thể xem/sửa ảnh của tài khoản chưa bị ẩn.
-  `uploads/avatars/.htaccess` chặn đọc trực tiếp thư mục/file ảnh.
-- Account Management sửa họ tên/email/điện thoại (tối đa 10 ký tự theo schema hiện tại),
-  đổi mật khẩu sau khi xác minh mật khẩu cũ, và có menu đăng xuất.
-- Non-admin có thể tự khóa/xóa sau khi nhập lại mật khẩu. Giữ nguyên cơ chế `is_deleted`:
-  còn lịch hẹn/hóa đơn thì ẩn tài khoản và giữ lịch sử; không có dữ liệu tham chiếu thì
-  xóa hẳn và dọn ảnh. Không tự khóa/xóa Admin. Trang Account hỗ trợ xác thực theo tài khoản,
-  các trang quản trị khác vẫn kiểm tra quyền Admin.
-- Thay ảnh trong Users Management được lưu ngay, độc lập với nút Save của form tài khoản.
+### 3.3. Hóa đơn & Thu tiền (`bills_feature`)
+- **Lập hóa đơn quầy:** Chọn bệnh nhân, gắn với lịch hẹn tương ứng, nhập tổng tiền (`total_amount`), số tiền trả trước (`paid_amount`) và phương thức ban đầu.
+- **Tính toán tài chính chính xác:** Toàn bộ tính toán công nợ trên server đều xử lý bằng số nguyên cent (nhân 100) để triệt tiêu sai số làm tròn số thực.
+- **Thu tiền nhiều đợt (Record Payment):** Ghi nhận tiền thu bằng Tiền mặt (*Cash*), Thẻ (*Card*), hoặc Chuyển khoản (*Bank Transfer*). Cập nhật số tiền đã trả và tự động tính lại trạng thái:
+  - `Unpaid`: Chưa thanh toán (`paid = 0`).
+  - `Partially Paid`: Đã thanh toán 1 phần (`0 < paid < total`).
+  - `Paid`: Đã thanh toán đủ (`paid == total`). Nút thu tiền tự động ẩn.
+- **Quy tắc an toàn tài chính:**
+  - Không cho phép thu vượt quá số dư còn nợ (`Balance = Total - Paid`).
+  - Không cho phép hủy hóa đơn đã thu tiền (`paid > 0`). Chỉ được hủy hóa đơn chưa thu tiền (`paid = 0`).
+  - Sử dụng khóa lạc quan (*Optimistic Locking*) qua chuỗi băm `revision` (SHA-256) để chống xung đột ghi đè.
 
-## Database dùng chung cho team
-- Bản export đầy đủ nằm tại
-  `database_export/hospital_management_system_20261115_143552/hospital_management_system.sql`.
-- Thư mục `database_export/` được phép đưa vào Git. Cần commit và push thư mục này cùng
-  `.gitignore` để các thành viên nhận được file khi clone/pull repository.
-- Mỗi thành viên mở phpMyAdmin, chọn Import và chọn file SQL trên. File có sẵn lệnh
-  tạo/chọn database `hospital_management_system`, cấu trúc và dữ liệu của 9 bảng.
-  Import vào DB cùng tên sẽ tạo lại các bảng và thay thế dữ liệu tương ứng.
-- Đây là snapshot tại thời điểm export, không tự đồng bộ MySQL giữa các máy.
-  Khi thay đổi DB, cần export bản mới rồi commit/push để team cập nhật.
-- File chứa dữ liệu tài khoản và mật khẩu đã băm; chỉ chia sẻ trong repository nội bộ.
-  Ảnh avatar nằm ở `uploads/avatars` và không được nhúng trong file SQL.
+---
 
-# HMS_web_project
-This project is a hospital management website which is built by a group of students who want to learn how a website acctually works. It's flaw and we'll try to improve.
+## 4. Tài Khoản Thử Nghiệm (Test Accounts)
+
+| Vai trò | Tên đăng nhập | Mật khẩu | Trang bắt đầu |
+| :--- | :--- | :--- | :--- |
+| **Lễ tân (Receptionist)** | `trung1` | `123` | `http://localhost/asm/receptionist_dashboard/receptionist_dashboard.html` |
+| **Quản trị viên (Admin)** | `admin` | `admin` | `http://localhost/asm/admin_form/homepage.html` |
+
+---
+
+## 5. Hướng Dẫn Cài Đặt & Chạy Cục Bộ
+
+1. **Khởi động XAMPP:**
+   - Mở XAMPP Control Panel, bật **Apache** và **MySQL**.
+2. **Cơ sở dữ liệu:**
+   - Mở phpMyAdmin: `http://localhost/phpmyadmin/`.
+   - Tạo cơ sở dữ liệu `hospital_management_system`.
+   - Import file: `database_export/hospital_management_system_20261115_143552/hospital_management_system.sql`.
+3. **Mã nguồn:**
+   - Đặt thư mục dự án tại `C:\xampp\htdocs\asm` (hoặc `C:\xampp\htdocs\Hospital_Management_System`).
+4. **Truy cập:**
+   - Đăng nhập: [http://localhost/asm/login_feature/index.html](http://localhost/asm/login_feature/index.html)
+   - Truy cập thẳng Dashboard Lễ tân: [http://localhost/asm/receptionist_dashboard/receptionist_dashboard.html](http://localhost/asm/receptionist_dashboard/receptionist_dashboard.html)
+
+---
+
+## 6. Tài Liệu Kỹ Thuật Tham Khảo
+
+- **[docs/LUONG_DU_LIEU_RECEPTIONIST.md](docs/LUONG_DU_LIEU_RECEPTIONIST.md):** Bản giải thích chi tiết toàn bộ luồng dữ liệu (Data Flow) bằng tiếng Việt kèm sơ đồ tuần tự và sơ đồ trạng thái.
+- **[docs/API_FOR_TEAM.md](docs/API_FOR_TEAM.md):** Hợp đồng tích hợp API chi tiết giữa 3 phân hệ: Lễ tân (Bạn A), Bác sĩ (Bạn B) và Bệnh nhân (Bạn C).
