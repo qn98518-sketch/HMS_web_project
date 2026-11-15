@@ -1,8 +1,9 @@
--- MariaDB dump 10.19  Distrib 10.4.32-MariaDB, for Win64 (AMD64)
+﻿/*M!999999\- enable the sandbox mode */ 
+-- MariaDB dump 10.19  Distrib 10.11.16-MariaDB, for Win64 (AMD64)
 --
 -- Host: localhost    Database: hospital_management_system
 -- ------------------------------------------------------
--- Server version	10.4.32-MariaDB
+-- Server version	10.11.16-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,7 +30,7 @@ USE `hospital_management_system`;
 
 DROP TABLE IF EXISTS `appointments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `appointments` (
   `appointment_id` varchar(36) NOT NULL DEFAULT uuid(),
   `patient_id` varchar(36) NOT NULL,
@@ -63,6 +64,13 @@ CREATE TABLE `appointments` (
 
 LOCK TABLES `appointments` WRITE;
 /*!40000 ALTER TABLE `appointments` DISABLE KEYS */;
+INSERT INTO `appointments` VALUES
+('0322c9e3-cf2f-448c-ab57-e08d77b96de7','ac2d25e5-e0d6-11f1-8da5-30560f3f3296','a500f09d-dc1a-11f1-ad38-9009dff66714','2026-11-16 02:00:00','123','confirmed','accepted',NULL,'2026-11-15 16:49:27','0806be86-157b-4c8c-9115-26dfc745c967','2026-11-15 16:52:34',NULL,'2026-11-15 16:48:52','a500f09d-dc1a-11f1-ad38-9009dff66714|2026-11-16 02:00:00'),
+('05525b67-56eb-49f2-baf7-b4efb27191c9','6b3ddfe0-e0d7-11f1-8da5-30560f3f3296','a500f09d-dc1a-11f1-ad38-9009dff66714','2026-11-16 04:00:00','123','rejected','rejected','123','2026-11-15 16:49:35','0806be86-157b-4c8c-9115-26dfc745c967','2026-11-15 16:50:58','123','2026-11-15 16:43:05',NULL),
+('2c83a28d-47a4-4965-adf2-82c3ec64ac2b','ac2d25e5-e0d6-11f1-8da5-30560f3f3296','a500f09d-dc1a-11f1-ad38-9009dff66714','2026-11-20 10:00:00','Routine general health checkup','confirmed','accepted',NULL,'2026-11-15 16:27:07','0806be86-157b-4c8c-9115-26dfc745c967','2026-11-15 16:27:07','Confirmed by receptionist Trung','2026-11-15 16:27:01','a500f09d-dc1a-11f1-ad38-9009dff66714|2026-11-20 10:00:00'),
+('4a5feee7-e0dc-11f1-8da5-30560f3f3296','6b3ddfe0-e0d7-11f1-8da5-30560f3f3296','a500f09d-dc1a-11f1-ad38-9009dff66714','2026-11-22 09:30:00','Routine cardiology followup','confirmed','accepted',NULL,NULL,NULL,NULL,NULL,'2026-11-15 17:06:57','a500f09d-dc1a-11f1-ad38-9009dff66714|2026-11-22 09:30:00'),
+('6c77c6cf-7d54-4cfb-85ae-6967d62db012','ac2d25e5-e0d6-11f1-8da5-30560f3f3296','a500f09d-dc1a-11f1-ad38-9009dff66714','2026-11-16 03:00:00',NULL,'confirmed','rejected','123','2026-11-15 16:51:36','0806be86-157b-4c8c-9115-26dfc745c967','2026-11-15 16:52:10','can\'t','2026-11-15 16:51:21','a500f09d-dc1a-11f1-ad38-9009dff66714|2026-11-16 03:00:00'),
+('bea3aa9b-46da-45e0-8334-840693f53871','ac2d25e5-e0d6-11f1-8da5-30560f3f3296','a500f09d-dc1a-11f1-ad38-9009dff66714','2026-11-16 02:00:00','123','rejected','pending',NULL,NULL,'0806be86-157b-4c8c-9115-26dfc745c967','2026-11-15 16:43:30','123','2026-11-15 16:43:18',NULL);
 /*!40000 ALTER TABLE `appointments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -72,7 +80,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `bills`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `bills` (
   `bill_id` varchar(36) NOT NULL DEFAULT uuid(),
   `patient_id` varchar(36) NOT NULL,
@@ -100,7 +108,13 @@ CREATE TABLE `bills` (
 
 LOCK TABLES `bills` WRITE;
 /*!40000 ALTER TABLE `bills` DISABLE KEYS */;
-INSERT INTO `bills` (`bill_id`, `patient_id`, `appointment_id`, `total_amount`, `paid_amount`, `payment_method`, `payment_status`, `bill_date`, `due_date`, `notes`) VALUES ('00a22845-49fa-4155-b6c9-aa0cc3ca4339','1d096138-e0ae-11f1-be17-9009dff66714',NULL,100000.00,100000.00,'Cash','Paid','2026-11-15 11:36:50','2026-11-18',NULL);
+INSERT INTO `bills` VALUES
+('00a22845-49fa-4155-b6c9-aa0cc3ca4339','1d096138-e0ae-11f1-be17-9009dff66714',NULL,100000.00,100000.00,'Cash','Paid','2026-11-15 11:36:50','2026-11-18',NULL),
+('15e41e46-6dca-4537-a917-a138fe4bdd12','6b3ddfe0-e0d7-11f1-8da5-30560f3f3296',NULL,250000.00,250000.00,'Card','Paid','2026-11-15 17:00:33','2026-11-25','Ultrasound and consultation fee'),
+('1ec21de7-2148-4997-807e-02f4b4ea59d9','ac2d25e5-e0d6-11f1-8da5-30560f3f3296','0322c9e3-cf2f-448c-ab57-e08d77b96de7',350000.00,350000.00,'Card','Paid','2026-11-15 17:00:15','2026-11-20','General examination and blood test'),
+('9e73b695-41ab-4424-87b0-cd6a9c51a045','ac2d25e5-e0d6-11f1-8da5-30560f3f3296','2c83a28d-47a4-4965-adf2-82c3ec64ac2b',500000.00,500000.00,'Bank Transfer','Paid','2026-11-15 16:27:12','2026-11-25','General examination consultation'),
+('bead44dc-e0df-11f1-8da5-30560f3f3296','ac2d25e5-e0d6-11f1-8da5-30560f3f3296','2c83a28d-47a4-4965-adf2-82c3ec64ac2b',300000.00,100000.00,'Card','Partially Paid','2026-11-15 17:31:40','2026-11-28','General consultation and testing (partial payment)'),
+('bead47a5-e0df-11f1-8da5-30560f3f3296','6b3ddfe0-e0d7-11f1-8da5-30560f3f3296','4a5feee7-e0dc-11f1-8da5-30560f3f3296',200000.00,0.00,'Cash','Unpaid','2026-11-15 17:31:40','2026-11-30','Routine followup consultation');
 /*!40000 ALTER TABLE `bills` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,7 +124,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `doctors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `doctors` (
   `doctor_id` varchar(36) NOT NULL DEFAULT uuid(),
   `user_id` varchar(36) DEFAULT NULL,
@@ -130,8 +144,9 @@ CREATE TABLE `doctors` (
 
 LOCK TABLES `doctors` WRITE;
 /*!40000 ALTER TABLE `doctors` DISABLE KEYS */;
-INSERT INTO `doctors` (`doctor_id`, `user_id`, `specialization`, `qualification`, `room_number`, `status`) VALUES ('a500f09d-dc1a-11f1-ad38-9009dff66714','14c12883-99e2-4d5a-8c9a-b13f643fc17c','Internal Medicine',NULL,1,1);
-INSERT INTO `doctors` (`doctor_id`, `user_id`, `specialization`, `qualification`, `room_number`, `status`) VALUES ('f6c3a372-dd91-11f1-baa3-9009dff66714','374a18f6-d1b4-4e7f-9c10-49cc5615da7c','Internal Medicine',NULL,1,1);
+INSERT INTO `doctors` VALUES
+('a500f09d-dc1a-11f1-ad38-9009dff66714','14c12883-99e2-4d5a-8c9a-b13f643fc17c','Internal Medicine',NULL,1,1),
+('f6c3a372-dd91-11f1-baa3-9009dff66714','374a18f6-d1b4-4e7f-9c10-49cc5615da7c','Internal Medicine',NULL,1,1);
 /*!40000 ALTER TABLE `doctors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +156,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `medical_records`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `medical_records` (
   `record_id` varchar(36) NOT NULL DEFAULT uuid(),
   `patient_id` varchar(36) NOT NULL,
@@ -177,7 +192,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `patients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `patients` (
   `patient_id` char(36) NOT NULL DEFAULT uuid(),
   `user_id` char(36) DEFAULT NULL,
@@ -198,8 +213,11 @@ CREATE TABLE `patients` (
 
 LOCK TABLES `patients` WRITE;
 /*!40000 ALTER TABLE `patients` DISABLE KEYS */;
-INSERT INTO `patients` (`patient_id`, `user_id`, `dob`, `gender`, `address`, `medical_history`, `created_at`) VALUES ('1d096138-e0ae-11f1-be17-9009dff66714','19d310c6-aedf-49f4-a7d2-47886dc1fa66','1999-01-01','others','Ha Noi, Viet Nam',NULL,'2026-11-15 11:36:24');
-INSERT INTO `patients` (`patient_id`, `user_id`, `dob`, `gender`, `address`, `medical_history`, `created_at`) VALUES ('c660f93e-db5e-11f1-a6d8-9009dff66714','374a18f6-d1b4-4e7f-9c10-49cc5615da7c','2005-10-12','male','Ha Noi, Viet Nam','Gay','2026-11-08 17:25:52');
+INSERT INTO `patients` VALUES
+('1d096138-e0ae-11f1-be17-9009dff66714','19d310c6-aedf-49f4-a7d2-47886dc1fa66','1999-01-01','others','Ha Noi, Viet Nam',NULL,'2026-11-15 11:36:24'),
+('6b3ddfe0-e0d7-11f1-8da5-30560f3f3296','ad40b7d0-296e-4fea-a3f0-4f406e610b86','2000-11-23','male','Thanh Hóa, Việt Nam',NULL,'2026-11-15 16:32:04'),
+('ac2d25e5-e0d6-11f1-8da5-30560f3f3296','8cddf029-7834-4b30-8fab-282779a57118','1995-05-20','male','456 Main St',NULL,'2026-11-15 16:26:44'),
+('c660f93e-db5e-11f1-a6d8-9009dff66714','374a18f6-d1b4-4e7f-9c10-49cc5615da7c','2005-10-12','male','Thanh Hoa, Viet Nam','Gay','2026-11-08 17:25:52');
 /*!40000 ALTER TABLE `patients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,7 +227,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `prescription_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `prescription_details` (
   `prescription_detailID` varchar(36) NOT NULL DEFAULT uuid(),
   `prescription_id` varchar(36) NOT NULL,
@@ -240,7 +258,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `prescriptions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `prescriptions` (
   `prescription_id` varchar(36) NOT NULL DEFAULT uuid(),
   `record_id` varchar(36) NOT NULL,
@@ -273,7 +291,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `test_results`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `test_results` (
   `test_result_id` varchar(36) NOT NULL DEFAULT uuid(),
   `patient_id` varchar(36) NOT NULL,
@@ -310,7 +328,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `user_id` char(36) NOT NULL DEFAULT uuid(),
   `username` varchar(100) NOT NULL,
@@ -334,21 +352,17 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`user_id`, `username`, `user_password`, `full_name`, `email`, `phone_number`, `role`, `create_at`, `user_status`, `is_deleted`, `avatar`) VALUES ('14c12883-99e2-4d5a-8c9a-b13f643fc17c','quan','$2y$10$dH/mWj02kznBpLe5wJcrjussj1Cm/TbnNWZdwFuU7BopWpQdR6Y1m','Minh Quân Nguyễn','qn98518@gmail.com','1234567890','doctor','2026-11-09 15:50:42',1,0,NULL);
-INSERT INTO `users` (`user_id`, `username`, `user_password`, `full_name`, `email`, `phone_number`, `role`, `create_at`, `user_status`, `is_deleted`, `avatar`) VALUES ('19d310c6-aedf-49f4-a7d2-47886dc1fa66','vudz','$2y$10$dLDv8Nc2XHTlMI0NYUvuHOp65m0BreWOKVDYbvXL/eTpMcxKWcgP.','Minh Ngọc Vũ','closer2007vn@gmail.com','1234567890','patient','2026-11-15 11:36:24',0,1,NULL);
-INSERT INTO `users` (`user_id`, `username`, `user_password`, `full_name`, `email`, `phone_number`, `role`, `create_at`, `user_status`, `is_deleted`, `avatar`) VALUES ('22363b68-da7a-11f1-9e88-9009dff66714','Closeramv','$2y$10$jIb9fg1gFd6XSkuE0jq1/umGi7N1VS/vo2xg.nrp3KCerF9FlMLOm','Minh Quân Nguyễn','qn98518@gmail.com','1234567890','admin','2026-11-07 14:09:12',0,0,NULL);
-INSERT INTO `users` (`user_id`, `username`, `user_password`, `full_name`, `email`, `phone_number`, `role`, `create_at`, `user_status`, `is_deleted`, `avatar`) VALUES ('374a18f6-d1b4-4e7f-9c10-49cc5615da7c','namdz','$2y$10$3DWxzuu3PcXDQ.iNTSvvP.7b8pJT0ZOovIvMK0hp3ue3VPwLBP.8q','Nguyễn Hà Nam','nam@gmail.com','1234567890','doctor','2026-11-08 17:25:52',1,0,NULL);
-INSERT INTO `users` (`user_id`, `username`, `user_password`, `full_name`, `email`, `phone_number`, `role`, `create_at`, `user_status`, `is_deleted`, `avatar`) VALUES ('61340cfd-da82-11f1-9e88-9009dff66714','admin','$2y$10$.50M.AoLfWkmUOPPvNGbFuoTGNPRSJFW2cLpldpacQeqDs3DnYXGW','Administrator','qn98518@gmail.com','1234567890','admin','2026-11-07 15:08:13',1,0,'e0e2cde18385bcd7f70eccc5ae8ce1d1.jpg');
+INSERT INTO `users` VALUES
+('0806be86-157b-4c8c-9115-26dfc745c967','trung1','$2y$12$zm.gUxguuzienugjgA5w9OYjRsi9uxHILsYwR08JTFhG9TboYezMS','Trung (Receptionist)','trung@hospital.com','0912345678','receptionist','2026-11-15 16:08:46',1,0,NULL),
+('14c12883-99e2-4d5a-8c9a-b13f643fc17c','quan','$2y$12$aIBqUBcSGR/UVtyIXWRbC.Z4L2Tufn9xY8FPhwHSfm6b39yEy8r2y','Minh Quân Nguyễn','qn98518@gmail.com','1234567890','doctor','2026-11-09 15:50:42',1,0,NULL),
+('19d310c6-aedf-49f4-a7d2-47886dc1fa66','vudz','$2y$10$dLDv8Nc2XHTlMI0NYUvuHOp65m0BreWOKVDYbvXL/eTpMcxKWcgP.','Minh Ngọc Vũ','closer2007vn@gmail.com','1234567890','patient','2026-11-15 11:36:24',0,1,NULL),
+('22363b68-da7a-11f1-9e88-9009dff66714','Closeramv','$2y$10$jIb9fg1gFd6XSkuE0jq1/umGi7N1VS/vo2xg.nrp3KCerF9FlMLOm','Minh Quân Nguyễn','qn98518@gmail.com','1234567890','admin','2026-11-07 14:09:12',0,0,NULL),
+('374a18f6-d1b4-4e7f-9c10-49cc5615da7c','namdz','$2y$10$3DWxzuu3PcXDQ.iNTSvvP.7b8pJT0ZOovIvMK0hp3ue3VPwLBP.8q','Nguyễn Hà Nam','nam@gmail.com','1234567890','doctor','2026-11-08 17:25:52',1,0,NULL),
+('61340cfd-da82-11f1-9e88-9009dff66714','admin','$2y$12$UPN0B4ygu54UfGLDleWyxedPHWFXj2ix19dM1nlejEPmHg2Eq6Ypy','Administrator','qn98518@gmail.com','1234567890','admin','2026-11-07 15:08:13',1,0,'e0e2cde18385bcd7f70eccc5ae8ce1d1.jpg'),
+('8cddf029-7834-4b30-8fab-282779a57118','patient_89341','$2y$12$HA9sn8FGKoCn4wLR.Dng7uxJrt/Aa746/9M4wM2h67/QP3wGX4ak.','David Miller',NULL,'0987654321','patient','2026-11-15 16:26:44',1,0,NULL),
+('ad40b7d0-296e-4fea-a3f0-4f406e610b86','patient_60921','$2y$12$kojYFqyUH/yYD4sA9H9.m.dU5fLEnGVNf.IrDoD/1882pLeyk/2fW','Nguyen Van C','trung123123@gmail.com','0987654326','patient','2026-11-15 16:32:04',1,0,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'hospital_management_system'
---
-
---
--- Dumping routines for database 'hospital_management_system'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -359,4 +373,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-11-15 14:35:53
+-- Dump completed on 2026-11-15 17:31:52
