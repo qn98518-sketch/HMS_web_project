@@ -2,7 +2,7 @@
 
 Phân hệ **Lễ tân (Receptionist)** thuộc Dự án Hệ thống Quản lý Bệnh viện (HMS).  
 Nhánh phát triển: **`Trung_receptionist_module`**  
-Thành viên phụ trách: **Bạn A — Lễ tân (Receptionist)**
+Thành viên phụ trách: **Nguyễn Đức Trung — Lễ tân (Receptionist)**
 
 ---
 
