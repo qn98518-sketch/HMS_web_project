@@ -1,0 +1,101 @@
+/*==============================*/
+/* PATIENTS - Doctor Dashboard */
+/*==============================*/
+
+.patients-page { width: 100%; }
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.search-box {
+    flex: 1 1 200px;
+    position: relative;
+}
+
+.search-box .icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.search-box input {
+    width: 100%;
+    height: 42px;
+    padding-left: 42px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+}
+
+.patients-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+    font-size: 14px;
+}
+
+.patients-table thead {
+    background: #1a6fa3;
+    color: white;
+}
+
+.patients-table th {
+    padding: 14px 10px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.patients-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.patients-table tbody tr { transition: .2s; }
+.patients-table tbody tr:hover { background: #f7fbff; }
+
+.patients-table .empty-row td {
+    text-align: center;
+    color: #888;
+    padding: 24px;
+}
+
+.patients-table th:last-child,
+.patients-table td:last-child {
+    position: sticky;
+    right: 0;
+    white-space: nowrap;
+    box-shadow: -6px 0 8px -6px rgba(0,0,0,.15);
+}
+
+.patients-table th:last-child { background: #1a6fa3; }
+.patients-table td:last-child { background: white; }
+.patients-table tbody tr:hover td:last-child { background: #f7fbff; }
+
+/* History list trong modal */
+.history-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+
+.history-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+    overflow: hidden;
+}
+
+.history-list li span {
+    display: block;
+    color: #64748b;
+    font-size: 12px;
+    margin-bottom: 2px;
+}

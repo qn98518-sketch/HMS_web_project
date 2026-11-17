@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Panel - Treatment Records</title>
+
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="treatment.css">
+
+    <script src="../js/auth.js" defer></script>
+</head>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-eye"    viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 5C6.5 5 2.7 9 1.5 12c1.2 3 5 7 10.5 7s9.3-4 10.5-7C21.3 9 17.5 5 12 5zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></symbol>
+    <symbol id="i-plus"   viewBox="0 0 24 24"><path d="M11 4h2v7h7v2h-7v7h-2v-7H4v-2h7V4z"/></symbol>
+    <symbol id="i-pen"    viewBox="0 0 24 24"><path d="m3 17.3 10.8-10.8 3.7 3.7L6.7 21H3v-3.7zM15.2 5.1l1.9-1.9a1 1 0 0 1 1.4 0l2.3 2.3a1 1 0 0 1 0 1.4l-1.9 1.9-3.7-3.7z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><path d="M10 3a7 7 0 1 0 4.3 12.5l4.6 4.6 1.4-1.4-4.6-4.6A7 7 0 0 0 10 3zm0 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"/></symbol>
+    <symbol id="i-pill"   viewBox="0 0 24 24"><path d="M4.22 11.29 11.29 4.22a4.5 4.5 0 0 1 6.36 6.36l-7.07 7.07a4.5 4.5 0 0 1-6.36-6.36zm1.42 1.42a2.5 2.5 0 0 0 3.53 3.53l3.18-3.18-3.53-3.53-3.18 3.18zm5-5 3.18 3.18 1.77-1.77a2.5 2.5 0 0 0-3.53-3.53l-1.42 1.42z"/></symbol>
+    <symbol id="i-flask"  viewBox="0 0 24 24"><path d="M14 2v8l4 8H6l4-8V2h4zm-2 0h-2v8.17L6.08 18h11.84L14 10.17V2z"/></symbol>
+  </defs>
+</svg>
+
+<body data-page="treatment">
+
+<div class="wrapper">
+
+    <aside id="sidebar"></aside>
+
+    <div class="main">
+
+        <header id="topbar"></header>
+
+        <main id="content">
+
+            <div class="treatment-page">
+
+                <div class="page-header">
+                    <div>
+                        <h2>Treatment Records</h2>
+                        <p>Manage medical records, prescriptions and test results.</p>
+                    </div>
+                    <button class="btn btn-primary" id="btnNewRecord" type="button">
+                        <svg class="icon"><use href="#i-plus"/></svg>
+                        New Medical Record
+                    </button>
+                </div>
+
+                <!-- Search -->
+                <div class="toolbar">
+                    <div class="search-box">
+                        <svg class="icon"><use href="#i-search"/></svg>
+                        <input type="text" id="txtSearch" placeholder="Search patient or diagnosis...">
+                    </div>
+                    <button class="btn btn-secondary" id="btnClear" type="button">Clear</button>
+                </div>
+
+                <!-- Records table -->
+                <div class="table-card">
+                    <table class="records-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date</th>
+                                <th>Patient</th>
+                                <th>Diagnosis</th>
+                                <th>Prescriptions</th>
+                                <th>Tests</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsBody">
+                            <tr class="empty-row"><td colspan="7">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- Modal: Tạo bệnh án mới -->
+<div class="modal" id="newRecordModal">
+    <div class="modal-box wide">
+        <div class="modal-header">
+            <h3>New Medical Record</h3>
+            <button type="button" data-close="newRecordModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="apptSelect">Appointment (Confirmed) <span style="color:#dc2626;">*</span></label>
+                <select id="apptSelect">
+                    <option value="" disabled selected>Select appointment...</option>
+                </select>
+            </div>
+            <div class="form-grid">
+                <div class="form-group span-2">
+                    <label for="diagnosisInput">Diagnosis <span style="color:#dc2626;">*</span></label>
+                    <textarea id="diagnosisInput" rows="3" placeholder="Enter diagnosis..."></textarea>
+                </div>
+                <div class="form-group span-2">
+                    <label for="symptomsInput">Symptoms</label>
+                    <textarea id="symptomsInput" rows="2" placeholder="Enter symptoms..."></textarea>
+                </div>
+                <div class="form-group span-2">
+                    <label for="treatmentInput">Treatment Plan</label>
+                    <textarea id="treatmentInput" rows="2" placeholder="Enter treatment plan..."></textarea>
+                </div>
+                <div class="form-group span-2">
+                    <label for="recordNotesInput">Notes</label>
+                    <textarea id="recordNotesInput" rows="2" placeholder="Additional notes..."></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-close="newRecordModal">Cancel</button>
+            <button class="btn btn-primary" type="button" id="btnSaveRecord">Save Record</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Chi tiết bệnh án + thêm đơn thuốc / xét nghiệm -->
+<div class="modal" id="detailModal">
+    <div class="modal-box wide">
+        <div class="modal-header">
+            <h3 id="detailTitle">Medical Record Details</h3>
+            <button type="button" data-close="detailModal">&times;</button>
+        </div>
+        <div class="modal-body" id="detailBody"></div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-close="detailModal">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Thêm đơn thuốc -->
+<div class="modal" id="rxModal">
+    <div class="modal-box wide">
+        <div class="modal-header">
+            <h3>Add Prescription</h3>
+            <button type="button" data-close="rxModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="rxRecordId">
+            <div class="form-grid">
+                <div class="form-group span-2">
+                    <label for="medName">Medicine Name <span style="color:#dc2626;">*</span></label>
+                    <input type="text" id="medName" placeholder="e.g. Paracetamol 500mg">
+                </div>
+                <div class="form-group">
+                    <label for="medDosage">Dosage</label>
+                    <input type="text" id="medDosage" placeholder="e.g. 500mg">
+                </div>
+                <div class="form-group">
+                    <label for="medFrequency">Frequency</label>
+                    <input type="text" id="medFrequency" placeholder="e.g. 3 times/day">
+                </div>
+                <div class="form-group">
+                    <label for="medDuration">Duration</label>
+                    <input type="text" id="medDuration" placeholder="e.g. 7 days">
+                </div>
+                <div class="form-group">
+                    <label for="medQty">Quantity <span style="color:#dc2626;">*</span></label>
+                    <input type="number" id="medQty" min="1" value="1">
+                </div>
+                <div class="form-group span-2">
+                    <label for="medInstructions">Instructions</label>
+                    <textarea id="medInstructions" rows="2" placeholder="Take after meals..."></textarea>
+                </div>
+                <div class="form-group span-2">
+                    <label for="rxNotes">Prescription Notes</label>
+                    <textarea id="rxNotes" rows="2" placeholder="Additional notes..."></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-close="rxModal">Cancel</button>
+            <button class="btn btn-primary" type="button" id="btnSaveRx">Add Prescription</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Thêm xét nghiệm -->
+<div class="modal" id="testModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Add Test Result</h3>
+            <button type="button" data-close="testModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="testRecordId">
+            <div class="form-group">
+                <label for="testName">Test Name <span style="color:#dc2626;">*</span></label>
+                <input type="text" id="testName" placeholder="e.g. Blood test, X-ray...">
+            </div>
+            <div class="form-group">
+                <label for="testResult">Result</label>
+                <textarea id="testResult" rows="2" placeholder="Leave empty if pending..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="testRef">Reference Range</label>
+                <input type="text" id="testRef" placeholder="e.g. 70-100 mg/dL">
+            </div>
+            <div class="form-group">
+                <label for="testNotes">Notes</label>
+                <textarea id="testNotes" rows="2" placeholder="Additional notes..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-close="testModal">Cancel</button>
+            <button class="btn btn-primary" type="button" id="btnSaveTest">Add Test</button>
+        </div>
+    </div>
+</div>
+
+<script src="../js/layout.js"></script>
+<script src="treatment.js"></script>
+
+</body>
+</html>

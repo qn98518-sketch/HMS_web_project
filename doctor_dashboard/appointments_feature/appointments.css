@@ -1,0 +1,204 @@
+/*==============================*/
+/* APPOINTMENTS - Doctor Dashboard (riêng cho module này) */
+/*==============================*/
+
+.appt-page {
+    width: 100%;
+}
+
+/*---------- Status chips ----------*/
+
+.status-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.chip:hover { border-color: #1a6fa3; }
+
+.chip .count {
+    background: #f1f5f9;
+    border-radius: 999px;
+    padding: 1px 8px;
+    font-size: 12px;
+}
+
+.chip.on {
+    background: #1a6fa3;
+    border-color: #1a6fa3;
+    color: white;
+}
+
+.chip.on .count {
+    background: rgba(255,255,255,.25);
+    color: white;
+}
+
+/*---------- Toolbar ----------*/
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.search-box {
+    flex: 1 1 200px;
+    position: relative;
+}
+
+.search-box .icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.search-box input {
+    width: 100%;
+    height: 42px;
+    padding-left: 42px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+}
+
+.toolbar select,
+.toolbar input[type="date"] {
+    height: 42px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0 10px;
+    background: white;
+}
+
+.toolbar select { width: 190px; }
+
+.date-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/*---------- Table ----------*/
+
+.appt-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+    font-size: 14px;
+}
+
+.appt-table thead {
+    background: #1a6fa3;
+    color: white;
+}
+
+.appt-table th {
+    padding: 14px 10px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.appt-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.appt-table tbody tr { transition: .2s; }
+.appt-table tbody tr:hover { background: #f7fbff; }
+
+.appt-table .sub {
+    display: block;
+    color: #94a3b8;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.appt-table .clip {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.appt-table .nowrap { white-space: nowrap; }
+
+.appt-table .empty-row td {
+    text-align: center;
+    color: #888;
+    padding: 24px;
+}
+
+/* Cột Actions luôn hiện ở mép phải */
+.appt-table th:last-child,
+.appt-table td:last-child {
+    position: sticky;
+    right: 0;
+    white-space: nowrap;
+    box-shadow: -6px 0 8px -6px rgba(0,0,0,.15);
+}
+
+.appt-table th:last-child { background: #1a6fa3; }
+.appt-table td:last-child { background: white; }
+.appt-table tbody tr:hover td:last-child { background: #f7fbff; }
+
+.actions-col {
+    min-width: 110px;
+}
+
+/*---------- Waiting label ----------*/
+
+.waiting-label {
+    display: block;
+    font-size: 11px;
+    color: #f59e0b;
+    margin-top: 2px;
+}
+
+.override-label {
+    color: #b45309;
+    font-size: 13px;
+}
+
+/*---------- Account info ----------*/
+
+.account-info {
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 12px;
+    color: #334155;
+}
+
+.account-info small {
+    display: block;
+    margin-top: 4px;
+    color: #64748b;
+}
+
+/*---------- Responsive ----------*/
+
+@media(max-width: 900px) {
+    .toolbar select { width: 100%; }
+}

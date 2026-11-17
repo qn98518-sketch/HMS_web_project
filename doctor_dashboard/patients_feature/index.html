@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Panel - My Patients</title>
+
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="patients.css">
+
+    <script src="../js/auth.js" defer></script>
+</head>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-eye"    viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 5C6.5 5 2.7 9 1.5 12c1.2 3 5 7 10.5 7s9.3-4 10.5-7C21.3 9 17.5 5 12 5zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></symbol>
+    <symbol id="i-pen"    viewBox="0 0 24 24"><path d="m3 17.3 10.8-10.8 3.7 3.7L6.7 21H3v-3.7zM15.2 5.1l1.9-1.9a1 1 0 0 1 1.4 0l2.3 2.3a1 1 0 0 1 0 1.4l-1.9 1.9-3.7-3.7z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><path d="M10 3a7 7 0 1 0 4.3 12.5l4.6 4.6 1.4-1.4-4.6-4.6A7 7 0 0 0 10 3zm0 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"/></symbol>
+  </defs>
+</svg>
+
+<body data-page="patients">
+
+<div class="wrapper">
+
+    <aside id="sidebar"></aside>
+
+    <div class="main">
+
+        <header id="topbar"></header>
+
+        <main id="content">
+
+            <div class="patients-page">
+
+                <div class="page-header">
+                    <div>
+                        <h2>My Patients</h2>
+                        <p>Patients who have confirmed or completed appointments with you.</p>
+                    </div>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="toolbar">
+                    <div class="search-box">
+                        <svg class="icon"><use href="#i-search"/></svg>
+                        <input type="text" id="txtSearch" placeholder="Search by name or username...">
+                    </div>
+                    <button class="btn btn-secondary" id="btnClear" type="button">Clear</button>
+                </div>
+
+                <!-- Table -->
+                <div class="table-card">
+                    <table class="patients-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                                <th>Gender</th>
+                                <th>Date of Birth</th>
+                                <th>Appointments</th>
+                                <th>Last Visit</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientBody">
+                            <tr class="empty-row"><td colspan="8">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- Modal: Chi tiết bệnh nhân + cập nhật medical history -->
+<div class="modal" id="patientModal">
+    <div class="modal-box wide">
+        <div class="modal-header">
+            <h3 id="patientModalTitle">Patient Details</h3>
+            <button type="button" data-close="patientModal">&times;</button>
+        </div>
+        <div class="modal-body" id="patientBody2"></div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-close="patientModal">Close</button>
+            <button class="btn btn-primary" type="button" id="btnSaveHistory" hidden>Save Medical History</button>
+        </div>
+    </div>
+</div>
+
+<script src="../js/layout.js"></script>
+<script>
+/*==============================================================
+  patients.js - Logic trang My Patients của Doctor
+==============================================================*/
+(function () {
+    const API = "patients_api.php";
+
+    let items      = [];
+    let viewingId  = null;
+
+    const $ = id => document.getElementById(id);
+
+    const esc = s => String(s ?? "").replace(/[&<>"']/g,
+        c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    const cell = v => v ? esc(v) : `<span style="color:#aaa">&mdash;</span>`;
+    const fmt  = s => s ? s.slice(0, 10) : "";
+
+    function kickIfUnauthorized(res, body) {
+        if (res.status === 401) { window.hmsKick && window.hmsKick(body || {}); return true; }
+        return false;
+    }
+
+    async function loadAll() {
+        try {
+            const res  = await fetch(API + "?action=list");
+            const body = await res.json().catch(() => null);
+            if (kickIfUnauthorized(res, body)) return;
+            if (!body || !body.success) {
+                alert((body && body.message) || "Cannot load patients.");
+                return;
+            }
+            items = body.data || [];
+            renderTable();
+        } catch (e) {
+            alert("Cannot load patients: " + e.message);
+        }
+    }
+
+    function renderTable() {
+        const key = $("txtSearch").value.trim().toLowerCase();
+        const rows = items.filter(p => {
+            if (!key) return true;
+            return [p.full_name, p.username].join(" ").toLowerCase().includes(key);
+        }).map((p, i) => `
+            <tr>
+                <td>${i + 1}</td>
+                <td>${cell(p.full_name)}</td>
+                <td>${p.username ? `<span style="color:#64748b">@${esc(p.username)}</span>` : `<span style="color:#aaa">&mdash;</span>`}</td>
+                <td>${cell(p.gender)}</td>
+                <td>${cell(fmt(p.dob))}</td>
+                <td style="text-align:center;">${p.appointment_count}</td>
+                <td>${cell(fmt(p.last_appointment))}</td>
+                <td>
+                    <button class="btn-icon view" type="button" title="View details"
+                            data-id="${esc(p.patient_id)}">
+                        <svg class="icon"><use href="#i-eye"/></svg>
+                    </button>
+                    <button class="btn-icon edit" type="button" title="Edit medical history"
+                            data-action="edit" data-id="${esc(p.patient_id)}">
+                        <svg class="icon"><use href="#i-pen"/></svg>
+                    </button>
+                </td>
+            </tr>`).join("");
+
+        $("patientBody").innerHTML = rows ||
+            `<tr class="empty-row"><td colspan="8">No patients found.</td></tr>`;
+    }
+
+    // Modal helpers
+    const openModal  = id => $(id).classList.add("open");
+    const closeModal = id => $(id).classList.remove("open");
+
+    document.addEventListener("click", e => {
+        const b = e.target.closest("[data-close]");
+        if (b) closeModal(b.dataset.close);
+    });
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") closeModal("patientModal");
+    });
+
+    async function openDetail(patientId, editMode) {
+        viewingId = patientId;
+        $("patientModalTitle").textContent = editMode ? "Edit Medical History" : "Patient Details";
+        $("patientBody2").innerHTML = `<p style="text-align:center;color:#888;">Loading...</p>`;
+        $("btnSaveHistory").hidden = !editMode;
+        openModal("patientModal");
+
+        try {
+            const res  = await fetch(API + "?action=detail&id=" + encodeURIComponent(patientId));
+            const body = await res.json().catch(() => null);
+            if (!body || !body.success) {
+                $("patientBody2").innerHTML = `<p style="color:#dc2626;">${esc((body && body.message) || "Cannot load patient.")}</p>`;
+                return;
+            }
+
+            const p     = body.data;
+            const appts = body.appointments || [];
+
+            const GENDER = { male: "Male", female: "Female", others: "Others" };
+
+            $("patientBody2").innerHTML = `
+                <dl class="detail-grid">
+                    <div><dt>Full Name</dt><dd>${cell(p.full_name)}</dd></div>
+                    <div><dt>Username</dt><dd>${p.username ? `@${esc(p.username)}` : "&mdash;"}</dd></div>
+                    <div><dt>Email</dt><dd>${cell(p.email)}</dd></div>
+                    <div><dt>Phone</dt><dd>${cell(p.phone)}</dd></div>
+                    <div><dt>Date of Birth</dt><dd>${cell(p.dob)}</dd></div>
+                    <div><dt>Gender</dt><dd>${cell(GENDER[p.gender] || p.gender)}</dd></div>
+                    <div class="span-2"><dt>Address</dt><dd>${cell(p.address)}</dd></div>
+                    <div class="span-2">
+                        <dt>Medical History</dt>
+                        <dd>
+                            ${editMode
+                                ? `<textarea id="medHistoryInput" rows="5" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;outline:none;font-family:inherit;font-size:14px;">${esc(p.medical_history)}</textarea>`
+                                : `<div style="white-space:pre-wrap;font-size:14px;">${cell(p.medical_history)}</div>`}
+                        </dd>
+                    </div>
+                </dl>
+
+                <h4 class="section-title">Appointment History with You</h4>
+                <ul class="history-list">
+                    ${appts.length === 0 ? "<li style='color:#888;padding:8px 0;'>No appointments.</li>" :
+                    appts.map(a => `
+                        <li>
+                            <span>${a.appointment_datetime ? a.appointment_datetime.slice(0,16) : "—"}</span>
+                            ${esc(a.visit_reason || "(no reason)")}
+                            <span class="badge st-${esc(a.appointment_status)}" style="float:right;">
+                                ${esc(a.appointment_status)}
+                            </span>
+                        </li>`).join("")}
+                </ul>`;
+        } catch (e) {
+            $("patientBody2").innerHTML = `<p style="color:#dc2626;">Error: ${esc(e.message)}</p>`;
+        }
+    }
+
+    // Save medical history
+    $("btnSaveHistory").onclick = async () => {
+        if (!viewingId) return;
+        const textarea = document.getElementById("medHistoryInput");
+        if (!textarea) return;
+
+        const data = new FormData();
+        data.append("action", "update_history");
+        data.append("patient_id", viewingId);
+        data.append("medical_history", textarea.value.trim());
+
+        try {
+            const res  = await fetch(API, { method: "POST", body: data });
+            const body = await res.json().catch(() => null);
+            if (!body || !body.success) {
+                alert((body && body.message) || "Failed to update.");
+                return;
+            }
+            alert(body.message || "Updated successfully.");
+            closeModal("patientModal");
+            await loadAll();
+        } catch (e) {
+            alert("Cannot connect to the server.");
+        }
+    };
+
+    // Click table
+    $("patientBody").onclick = e => {
+        const btn = e.target.closest("button[data-id]");
+        if (!btn) return;
+        const id = btn.dataset.id;
+        openDetail(id, btn.dataset.action === "edit");
+    };
+
+    $("txtSearch").oninput = renderTable;
+    $("btnClear").onclick  = () => { $("txtSearch").value = ""; renderTable(); };
+
+    loadAll();
+})();
+</script>
+
+</body>
+</html>

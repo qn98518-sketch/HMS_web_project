@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Panel - My Appointments</title>
+
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="appointments.css">
+
+    <script src="../js/auth.js" defer></script>
+</head>
+
+<!-- Thêm các icon SVG riêng của trang này -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-eye"   viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 5C6.5 5 2.7 9 1.5 12c1.2 3 5 7 10.5 7s9.3-4 10.5-7C21.3 9 17.5 5 12 5zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></symbol>
+    <symbol id="i-x"     viewBox="0 0 24 24"><path d="M6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12 19 6.4 17.6 5 12 10.6z"/></symbol>
+    <symbol id="i-done"  viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><path d="M10 3a7 7 0 1 0 4.3 12.5l4.6 4.6 1.4-1.4-4.6-4.6A7 7 0 0 0 10 3zm0 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"/></symbol>
+  </defs>
+</svg>
+
+<body data-page="appointments">
+
+<div class="wrapper">
+
+    <aside id="sidebar"></aside>
+
+    <div class="main">
+
+        <header id="topbar"></header>
+
+        <main id="content">
+
+            <div class="appt-page">
+
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div>
+                        <h2>My Appointments</h2>
+                        <p>View your schedule and respond to appointment requests.</p>
+                    </div>
+                </div>
+
+                <!-- Status filter chips -->
+                <div class="status-chips" id="statusChips"></div>
+
+                <!-- Toolbar -->
+                <div class="toolbar">
+                    <div class="search-box">
+                        <svg class="icon"><use href="#i-search"/></svg>
+                        <input type="text" id="txtSearch" placeholder="Search patient or reason...">
+                    </div>
+                    <select id="filterResponse">
+                        <option value="">Any Response</option>
+                        <option value="pending">Awaiting my response</option>
+                        <option value="accepted">Accepted</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                    <label class="date-filter">From <input type="date" id="dateFrom"></label>
+                    <label class="date-filter">To   <input type="date" id="dateTo"></label>
+                    <button class="btn btn-secondary" id="btnClear" type="button">Clear</button>
+                </div>
+
+                <!-- Table -->
+                <div class="table-card">
+                    <table class="appt-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date &amp; Time</th>
+                                <th>Patient</th>
+                                <th>Visit Reason</th>
+                                <th>Status</th>
+                                <th>My Response</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="apptBody">
+                            <tr class="empty-row"><td colspan="7">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div><!-- /appt-page -->
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- ===== Modal: Chi tiết lịch hẹn ===== -->
+<div class="modal" id="viewModal">
+    <div class="modal-box wide">
+        <div class="modal-header">
+            <h3>Appointment Details</h3>
+            <button type="button" data-close="viewModal">&times;</button>
+        </div>
+        <div class="modal-body" id="viewBody"></div>
+        <div class="modal-footer" id="viewFooter">
+            <button class="btn btn-secondary" type="button" data-close="viewModal">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Modal: Accept lịch ===== -->
+<div class="modal" id="acceptModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Accept Appointment</h3>
+            <button type="button" data-close="acceptModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="note-info">By accepting, you agree to see this patient at the scheduled time. Final confirmation still requires reception approval.</div>
+            <div id="acceptInfo" class="account-info"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-close="acceptModal">Cancel</button>
+            <button class="btn btn-success" type="button" id="btnConfirmAccept">Accept Appointment</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Modal: Reject lịch ===== -->
+<div class="modal" id="rejectModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Reject Appointment</h3>
+            <button type="button" data-close="rejectModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="note-warn">The appointment will remain <strong>Pending</strong> — reception will make the final decision.</div>
+            <div id="rejectInfo" class="account-info" style="margin-bottom:16px;"></div>
+            <div class="form-group">
+                <label for="rejectReason">Reason for rejection <span style="color:#dc2626;">*</span></label>
+                <textarea id="rejectReason" rows="3" placeholder="Please explain why you cannot accept this appointment..." maxlength="255"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-close="rejectModal">Cancel</button>
+            <button class="btn btn-danger" type="button" id="btnConfirmReject">Reject Appointment</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Modal: Complete lịch ===== -->
+<div class="modal" id="completeModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Complete Appointment</h3>
+            <button type="button" data-close="completeModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="note-info" id="completeInfo"></div>
+            <p style="color:#475569;margin-top:12px;">Mark this appointment as <strong>Completed</strong>. Make sure you have already saved the medical record for this patient.</p>
+            <div id="completeWarn" hidden class="note-warn" style="margin-top:12px;"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-close="completeModal">Cancel</button>
+            <button class="btn btn-primary" type="button" id="btnConfirmComplete">Mark as Completed</button>
+        </div>
+    </div>
+</div>
+
+<script src="../js/layout.js"></script>
+<script src="appointments.js"></script>
+
+</body>
+</html>
