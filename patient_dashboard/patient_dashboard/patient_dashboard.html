@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Dashboard | HMS</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-logo">
+
+            <div class="logo-icon">
+                <i class="fas fa-hospital"></i>
+            </div>
+
+            <div class="logo-text">
+                <h2>HMS</h2>
+                <span>Patient Portal</span>
+            </div>
+
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <p class="menu-title">MENU</p>
+
+            <a href="patient_dashboard.html"
+               class="menu-item active">
+                <i class="fas fa-house"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="profile_feature/profile.php"
+               class="menu-item">
+                <i class="fas fa-user"></i>
+                <span>My Profile</span>
+            </a>
+
+            <a href="appointments_feature/appointments.php"
+               class="menu-item">
+                <i class="fas fa-calendar-check"></i>
+                <span>My Appointments</span>
+            </a>
+
+            <a href="history_feature/history.php"
+               class="menu-item">
+                <i class="fas fa-file-medical"></i>
+                <span>Medical History</span>
+            </a>
+
+            <a href="bills_feature/bills.php"
+               class="menu-item">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>My Bills</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-help">
+                <i class="fas fa-circle-question"></i>
+                <span>Patient Support</span>
+            </div>
+
+            <a href="../login_feature/index.html"
+               class="menu-item logout-item">
+                <i class="fas fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- HEADER -->
+        <header class="top-header">
+
+            <div class="header-left">
+
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div>
+                    <h3>Patient Dashboard</h3>
+                    <p>Welcome to your health portal</p>
+                </div>
+
+            </div>
+
+            <div class="header-right">
+
+                <div class="header-date">
+                    <i class="far fa-calendar"></i>
+                    <span id="currentDate"></span>
+                </div>
+
+                <div class="profile-info">
+
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <div class="profile-text">
+                        <strong id="patientName">Patient</strong>
+                        <span>Patient</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- DASHBOARD CONTENT -->
+        <div class="dashboard-content">
+
+            <!-- WELCOME SECTION -->
+            <section class="welcome-section">
+
+                <div>
+                    <h1>
+                        Welcome, <span id="welcomeName">Patient</span>!
+                    </h1>
+
+                    <p>
+                        Here is your health overview.
+                    </p>
+                </div>
+
+                <div class="welcome-icon">
+                    <i class="fas fa-heart-pulse"></i>
+                </div>
+
+            </section>
+
+
+            <!-- STATISTICS -->
+            <section class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <p>Total Appointments</p>
+                        <h2 id="totalAppointments">0</h2>
+                        <span>All appointments</span>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <p>Upcoming Appointments</p>
+                        <h2 id="upcomingAppointments">0</h2>
+                        <span>Pending or confirmed</span>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon purple">
+                        <i class="fas fa-user-doctor"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <p>Completed Visits</p>
+                        <h2 id="completedVisits">0</h2>
+                        <span>Completed appointments</span>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon orange">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <p>Unpaid Bills</p>
+                        <h2 id="unpaidBills">0</h2>
+                        <span>Outstanding bills</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- MAIN GRID -->
+            <section class="dashboard-grid">
+
+                <!-- UPCOMING APPOINTMENTS -->
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <h3>Upcoming Appointments</h3>
+                            <p>Your latest appointment information</p>
+                        </div>
+
+                        <a href="appointments_feature/appointments.php">
+                            View All
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>Doctor</th>
+                                    <th>Date & Time</th>
+                                    <th>Reason</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="appointmentTable">
+
+                                <tr>
+                                    <td colspan="4" class="empty-message">
+                                        Loading appointments...
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUICK ACTIONS -->
+                <div class="content-card">
+
+                    <div class="card-header">
+                        <div>
+                            <h3>Quick Actions</h3>
+                            <p>Access your patient features</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <a href="profile_feature/profile.php"
+                           class="action-item">
+
+                            <div class="action-icon blue">
+                                <i class="fas fa-user"></i>
+                            </div>
+
+                            <div>
+                                <strong>My Profile</strong>
+                                <span>View and update your information</span>
+                            </div>
+
+                            <i class="fas fa-chevron-right"></i>
+
+                        </a>
+
+
+                        <a href="appointments_feature/appointments.php"
+                           class="action-item">
+
+                            <div class="action-icon green">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+
+                            <div>
+                                <strong>My Appointments</strong>
+                                <span>Manage your appointments</span>
+                            </div>
+
+                            <i class="fas fa-chevron-right"></i>
+
+                        </a>
+
+
+                        <a href="history_feature/history.php"
+                           class="action-item">
+
+                            <div class="action-icon purple">
+                                <i class="fas fa-file-medical"></i>
+                            </div>
+
+                            <div>
+                                <strong>Medical History</strong>
+                                <span>View your medical records</span>
+                            </div>
+
+                            <i class="fas fa-chevron-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- FOOTER -->
+            <footer class="dashboard-footer">
+                Hospital Management System - Patient Portal
+            </footer>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- JAVASCRIPT -->
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
