@@ -1,0 +1,94 @@
+#sidebar {
+    background: #B8860B !important;
+    color: #0F172A !important;
+}
+
+#sidebar .logo {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+    background: rgba(0, 0, 0, 0.04) !important;
+}
+
+#sidebar ul li a {
+    color: #0F172A !important;
+    font-weight: 600 !important;
+    transition: background 0.2s, color 0.2s;
+}
+
+#sidebar ul li a svg {
+    color: #0F172A !important;
+    fill: currentColor !important;
+}
+
+#sidebar ul li:hover {
+    background: #9A6F09 !important;
+}
+
+#sidebar ul li:hover a,
+#sidebar ul li:hover a svg {
+    color: #FFFFFF !important;
+}
+
+#sidebar ul li.nav-active {
+    background: #0F172A !important;
+}
+
+#sidebar ul li.nav-active a,
+#sidebar ul li.nav-active a svg {
+    color: #FBBF24 !important;
+}
+
+.btn-primary,
+button.btn-primary,
+input[type="submit"].btn-primary,
+.page-header .btn-primary {
+    background: #B8860B !important;
+    border-color: #9A6F09 !important;
+    color: #FFFFFF !important;
+}
+
+.btn-primary:hover,
+button.btn-primary:hover,
+input[type="submit"].btn-primary:hover,
+.page-header .btn-primary:hover {
+    background: #9A6F09 !important;
+    border-color: #785206 !important;
+    color: #FFFFFF !important;
+}
+
+.chip.on,
+.status-chips .chip.on {
+    background: #B8860B !important;
+    border-color: #B8860B !important;
+    color: #FFFFFF !important;
+}
+
+.chip:hover,
+.status-chips .chip:hover {
+    border-color: #B8860B !important;
+}
+
+.table thead,
+.table thead th,
+.bills-table thead,
+.bills-table thead th,
+table thead,
+table thead th {
+    background: #B8860B !important;
+    color: #FFFFFF !important;
+}
+
+.bills-table th:last-child {
+    background: #B8860B !important;
+}
+
+.quick-card .icon {
+    color: #B45309 !important;
+}
+
+.quick-card:hover {
+    border: 1px solid #D97706 !important;
+}
+
+.toggle-btn:hover {
+    color: #B45309 !important;
+}

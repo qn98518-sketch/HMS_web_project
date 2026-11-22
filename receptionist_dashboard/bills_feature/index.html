@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../../admin_form/css/layout.css">
     <link rel="stylesheet" href="../../admin_form/css/common.css">
     <link rel="stylesheet" href="bills_management.css">
+    <link rel="stylesheet" href="../css/receptionist_theme.css?v=12">
 </head>
 
 <body data-page="bills">
@@ -187,27 +188,9 @@
             </div>
         </form>
     </div>
-    <script src="../js/layout.js?v=3"></script>
-    <script src="bills.js?v=2"></script>
-</body>
 
-<div class="modal" id="cancelModal" role="dialog" aria-modal="true" aria-labelledby="cancelTitle">
-    <form class="modal-box" id="cancelForm">
-        <div class="modal-header">
-            <h3 id="cancelTitle">Cancel Bill</h3><button type="button" data-close="cancelModal"
-                aria-label="Close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p id="cancelError" class="error-message" role="alert" hidden></p>
-            <div id="cancelInfo" class="account-info"></div>
-            <p>Cancel this bill? It will remain available for reference and cannot be changed or paid afterwards.</p>
-        </div>
-        <div class="modal-footer"><button class="btn btn-secondary" type="button" data-close="cancelModal">Keep
-                Bill</button><button class="btn btn-danger" type="submit" id="btnCancelBill">Cancel Bill</button></div>
-    </form>
-</div>
-<script src="../js/layout.js?v=5"></script>
-<script src="bills.js?v=2"></script>
+<script src="../js/layout.js?v=12"></script>
+<script src="bills.js?v=3"></script>
 </body>
 
 </html>

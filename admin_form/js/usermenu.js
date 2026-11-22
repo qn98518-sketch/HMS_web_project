@@ -108,6 +108,13 @@
             if (!res.ok || !body || !body.success) return;
 
             const me = body.data;
+            if (me.role === 'receptionist') {
+                const recAccount = new URL("../../receptionist_dashboard/account_feature/index.html", BASE).href;
+                if (window.location.href.includes("account_feature")) {
+                    window.location.replace(recAccount);
+                    return;
+                }
+            }
             if (me.role !== 'admin') {
                 const menu = document.querySelector('#sidebar ul');
                 if (menu) menu.hidden = true;

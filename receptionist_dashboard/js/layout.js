@@ -1,14 +1,53 @@
 (function () {
-    const BASE = new URL("../", document.currentScript.src).href;
-    const ADMIN_BASE = new URL("../../admin_form/", document.currentScript.src).href;
+    let BASE = "";
+    if (document.currentScript && document.currentScript.src) {
+        BASE = new URL("../", document.currentScript.src).href;
+    } else {
+        const m = window.location.href.match(/^(https?:\/\/[^\/]+\/.*?receptionist_dashboard\/)/);
+        BASE = m ? m[1] : (window.location.origin + "/asm/receptionist_dashboard/");
+    }
+    const ADMIN_BASE = new URL("../../admin_form/", BASE + "js/").href;
 
     const MENU = [
         { key: "dashboard", label: "Dashboard", icon: "home", href: "receptionist_dashboard.html" },
         { key: "patients", label: "Patients Reception", icon: "patient", href: "patients_feature/index.html" },
         { key: "appointments", label: "Appointments", icon: "calendar", href: "appointments_feature/index.html" },
         { key: "bills", label: "Bills & Payments", icon: "bill", href: "bills_feature/index.html" },
-        { key: "account", label: "My Account", icon: "users", href: "../admin_form/account_feature/index.html" }
+        { key: "account", label: "My Account", icon: "users", href: "account_feature/index.html" }
     ];
+
+    let style = document.getElementById("recThemeStyle");
+    if (!style) {
+        style = document.createElement("style");
+        style.id = "recThemeStyle";
+        document.head.appendChild(style);
+    }
+    style.textContent = `
+        #sidebar { background: #B8860B !important; color: #0F172A !important; }
+        #sidebar .logo { border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important; background: rgba(0, 0, 0, 0.04) !important; }
+        #sidebar ul li a { color: #0F172A !important; font-weight: 600 !important; transition: background 0.2s, color 0.2s; }
+        #sidebar ul li a svg { color: #0F172A !important; fill: currentColor !important; }
+        #sidebar ul li:hover { background: #9A6F09 !important; }
+        #sidebar ul li:hover a, #sidebar ul li:hover a svg { color: #FFFFFF !important; }
+        #sidebar ul li.nav-active { background: #0F172A !important; }
+        #sidebar ul li.nav-active a, #sidebar ul li.nav-active a svg { color: #FBBF24 !important; }
+        .btn-primary, button.btn-primary, input[type="submit"].btn-primary, .page-header .btn-primary {
+            background: #B8860B !important; border-color: #9A6F09 !important; color: #FFFFFF !important;
+        }
+        .btn-primary:hover, button.btn-primary:hover, input[type="submit"].btn-primary:hover, .page-header .btn-primary:hover {
+            background: #9A6F09 !important; border-color: #785206 !important; color: #FFFFFF !important;
+        }
+        .chip.on, .status-chips .chip.on {
+            background: #B8860B !important; border-color: #B8860B !important; color: #FFFFFF !important;
+        }
+        .table thead, .table thead th, .bills-table thead, .bills-table thead th, table thead, table thead th {
+            background: #B8860B !important; color: #FFFFFF !important;
+        }
+        .bills-table th:last-child { background: #B8860B !important; }
+        .quick-card .icon { color: #B45309 !important; }
+        .quick-card:hover { border: 1px solid #D97706 !important; }
+        .toggle-btn:hover { color: #B45309 !important; }
+    `;
 
     const SPRITE = `
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -64,6 +103,6 @@
     }
 
     const userMenuScript = document.createElement('script');
-    userMenuScript.src = BASE + 'js/usermenu.js?v=2';
+    userMenuScript.src = BASE + 'js/usermenu.js?v=10';
     document.head.appendChild(userMenuScript);
 })();

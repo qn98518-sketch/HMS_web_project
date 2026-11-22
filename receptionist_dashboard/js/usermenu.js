@@ -5,12 +5,18 @@
 ==============================================================*/
 (function () {
 
-    const BASE        = new URL("../", document.currentScript.src).href;           // .../receptionist_dashboard/
-    const ADMIN_BASE  = new URL("../../admin_form/", document.currentScript.src).href; // .../admin_form/
+    let BASE = "";
+    if (document.currentScript && document.currentScript.src) {
+        BASE = new URL("../", document.currentScript.src).href;
+    } else {
+        const m = window.location.href.match(/^(https?:\/\/[^\/]+\/.*?receptionist_dashboard\/)/);
+        BASE = m ? m[1] : (window.location.origin + "/asm/receptionist_dashboard/");
+    }
+    const ADMIN_BASE  = new URL("../../admin_form/", BASE + "js/").href;
     const ME_URL      = ADMIN_BASE + "php/account_api.php?action=me";
     const LOGOUT      = ADMIN_BASE + "php/logout.php";
-    const ACCOUNT     = ADMIN_BASE + "account_feature/index.html";
-    const LOGIN_URL   = new URL("../../login_feature/index.html", document.currentScript.src).href;
+    const ACCOUNT     = BASE + "account_feature/index.html";
+    const LOGIN_URL   = new URL("../../login_feature/index.html", BASE + "js/").href;
 
     const topbar = document.getElementById("topbar");
     if (!topbar || document.getElementById("userMenu")) return;

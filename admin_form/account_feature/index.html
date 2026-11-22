@@ -8,6 +8,19 @@
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="account_management.css">
+    <script>
+    (function () {
+        try {
+            fetch('../php/account_api.php?action=me', { credentials: 'same-origin', cache: 'no-store' })
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    if (d && d.success && d.data && d.data.role === 'receptionist') {
+                        window.location.replace('../../receptionist_dashboard/account_feature/index.html');
+                    }
+                }).catch(function () {});
+        } catch (e) {}
+    })();
+    </script>
 </head>
 
 <body data-page="account">
