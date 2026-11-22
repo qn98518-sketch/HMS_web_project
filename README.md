@@ -8,10 +8,11 @@ Thành viên phụ trách: **Nguyễn Đức Trung — Lễ tân (Receptionist)*
 
 ## 1. Tổng quan Phân hệ Lễ tân
 
-Phân hệ Lễ tân là "Cửa ngõ tiếp nhận và điều phối hành chính" của bệnh viện, đảm nhận 3 mảng chức năng cốt lõi:
+Phân hệ Lễ tân là "Cửa ngõ tiếp nhận và điều phối hành chính" của bệnh viện, đảm nhận 4 mảng chức năng cốt lõi:
 1. **Tiếp nhận bệnh nhân tại quầy (Patients Reception):** Đón tiếp bệnh nhân vãng lai, tạo hồ sơ mới, tra cứu hành chính và chỉnh sửa thông tin liên lạc.
 2. **Điều phối & Duyệt lịch hẹn (Appointments Desk):** Quản lý toàn bộ lịch hẹn quầy, áp dụng mô hình duyệt 2 trạng thái (*Doctor Response* vs *Appointment Status*).
 3. **Quản lý hóa đơn & Thu tiền (Bills & Payments):** Lập hóa đơn dịch vụ, ghi nhận các đợt thanh toán (Tiền mặt, Thẻ, Chuyển khoản) và quản lý công nợ chính xác.
+4. **Quản lý tài khoản Lễ tân (My Account):** Quản lý thông tin cá nhân của nhân viên lễ tân, đổi ảnh đại diện (avatar) và đổi mật khẩu an toàn, giao diện màu vàng đồng bộ.
 
 ---
 
@@ -24,12 +25,17 @@ Hospital_Management_System/
 │   └── login_back_end.php                  # Xử lý đăng nhập và điều hướng theo role
 ├── receptionist_dashboard/                 # ⭐ TOÀN BỘ PHÂN HỆ LỄ TÂN (BẠN A)
 │   ├── receptionist_dashboard.html         # Trang chủ điều khiển của Lễ tân (Dashboard)
+│   ├── css/
+│   │   └── receptionist_theme.css          # Tông màu Lễ tân (Vàng mật ong trầm ấm / Dark Goldenrod)
 │   ├── js/
 │   │   ├── layout.js                       # Render Sidebar, Topbar và Sprite Icon
 │   │   └── usermenu.js                     # Menu thông tin tài khoản & đăng xuất của Lễ tân
 │   ├── php/
 │   │   ├── auth_guard.php                  # Bảo vệ API: bắt buộc role 'receptionist'
 │   │   └── check_auth.php                  # Kiểm tra phiên làm việc đăng nhập
+│   ├── account_feature/                    # Module Quản lý tài khoản Lễ tân (My Account)
+│   │   ├── index.html                      # Giao diện đổi thông tin cá nhân, ảnh đại diện, mật khẩu
+│   │   └── account.js                      # Xử lý cập nhật hồ sơ, avatar và mật khẩu
 │   ├── patients_feature/                   # Module Tiếp nhận bệnh nhân tại quầy
 │   │   ├── index.html
 │   │   ├── patients.js
@@ -87,6 +93,12 @@ Hospital_Management_System/
   - Không cho phép hủy hóa đơn đã thu tiền (`paid > 0`). Chỉ được hủy hóa đơn chưa thu tiền (`paid = 0`).
   - Sử dụng khóa lạc quan (*Optimistic Locking*) qua chuỗi băm `revision` (SHA-256) để chống xung đột ghi đè.
 
+### 3.4. Quản lý tài khoản cá nhân (`account_feature`)
+- **Hồ sơ cá nhân & Ảnh đại diện:** Xem username, role `receptionist`, cập nhật họ tên, email, số điện thoại, tải lên hoặc xóa ảnh đại diện (avatar) của nhân viên lễ tân.
+- **Đổi mật khẩu:** Đổi mật khẩu cá nhân an toàn (yêu cầu mật khẩu hiện tại và kiểm tra khớp mật khẩu mới tối thiểu 6 ký tự).
+- **Vùng nguy hiểm (Danger Zone):** Tự khóa tài khoản cá nhân khi cần thiết.
+- **Hoạt động độc lập:** Tích hợp trực tiếp thanh menu và theme màu vàng của Lễ tân, tự động điều hướng nếu truy cập nhầm trang của Admin.
+
 ---
 
 ## 4. Tài Khoản Thử Nghiệm (Test Accounts)
@@ -94,6 +106,7 @@ Hospital_Management_System/
 | Vai trò | Tên đăng nhập | Mật khẩu | Trang bắt đầu |
 | :--- | :--- | :--- | :--- |
 | **Lễ tân (Receptionist)** | `trung1` | `123` | `http://localhost/asm/receptionist_dashboard/receptionist_dashboard.html` |
+| **Tài khoản Lễ tân (My Account)** | `trung1` | `123` | `http://localhost/asm/receptionist_dashboard/account_feature/index.html` |
 | **Quản trị viên (Admin)** | `admin` | `admin` | `http://localhost/asm/admin_form/homepage.html` |
 
 ---

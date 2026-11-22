@@ -147,6 +147,21 @@ Xuất hóa đơn dịch vụ, ghi nhận các đợt thu tiền mặt/thẻ/chu
 
 ---
 
+### LUỒNG 4: QUẢN LÝ TÀI KHOẢN CÁ NHÂN LỄ TÂN (MY ACCOUNT)
+*(Thư mục mã nguồn: `receptionist_dashboard/account_feature/`)*
+
+#### Mục đích:
+Cho phép nhân viên lễ tân tự quản lý hồ sơ cá nhân, đổi ảnh đại diện (avatar) và đổi mật khẩu an toàn, chạy hoàn toàn độc lập trong giao diện của Lễ tân mà không phụ thuộc trang Admin.
+
+#### Các bước thực hiện:
+1. **Xem thông tin:** Gọi API lấy thông tin người dùng từ phiên đăng nhập (`users`: họ tên, email, SĐT, avatar).
+2. **Cập nhật hồ sơ:** Cho phép cập nhật họ tên, email, số điện thoại của tài khoản Lễ tân.
+3. **Đổi ảnh đại diện (Avatar):** Tải lên file ảnh (JPG, PNG, WEBP, GIF tối đa 2MB) hoặc xóa ảnh đại diện.
+4. **Đổi mật khẩu:** Yêu cầu nhập mật khẩu hiện tại, kiểm tra khớp mật khẩu mới (tối thiểu 6 ký tự) và băm an toàn trên server.
+5. **Điều hướng an toàn:** Nếu truy cập nhầm trang của Admin, hệ thống tự động phát hiện role `receptionist` và chuyển hướng về giao diện Lễ tân.
+
+---
+
 ## 3. BẢNG TỔNG HỢP CÁC BẢNG DỮ LIỆU LIÊN QUAN
 
 | Tên bảng trong DB | Lễ tân Đọc (SELECT) | Lễ tân Ghi (INSERT/UPDATE) | Ghi chú bảo mật |
