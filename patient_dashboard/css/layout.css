@@ -1,0 +1,619 @@
+
+/* =========================================
+   1. GENERAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #F4F7FB;
+    color: #26384A;
+    font-size: 15px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+
+/* =========================================
+   2. SIDEBAR
+========================================= */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    min-width: 250px;
+    height: 100vh;
+
+    background: #173B63;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    z-index: 200;
+    transition: left 0.3s ease;
+}
+
+
+/* =========================================
+   3. SIDEBAR LOGO
+========================================= */
+
+.sidebar > .sidebar-logo {
+    width: 100%;
+    height: 70px;
+    min-height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    margin: 0;
+
+    background: #173B63;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.sidebar-logo .logo-icon {
+    width: 100%;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.sidebar-logo .logo-icon img {
+    display: block;
+
+    width: 70px;
+    height: 65px;
+
+    max-width: 70px;
+    max-height: 65px;
+
+    object-fit: contain;
+    object-position: center;
+
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+}
+
+
+/* =========================================
+   4. SIDEBAR MENU
+========================================= */
+
+.sidebar-menu {
+    width: 100%;
+    margin-top: 15px;
+    padding: 0 10px;
+    min-width: 0;
+}
+
+.menu-title {
+    font-size: 12px;
+    color: #9CB2C9;
+    font-weight: 600;
+
+    padding: 0 12px;
+    margin-bottom: 15px;
+
+    letter-spacing: 1px;
+}
+
+.menu-item {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 16px 12px;
+    margin-bottom: 5px;
+
+    border-radius: 6px;
+
+    color: #D4E1EE;
+    font-size: 15px;
+    font-weight: 400;
+
+    white-space: nowrap;
+    overflow: hidden;
+
+    transition: 0.25s;
+}
+
+.menu-item i {
+    width: 20px;
+    min-width: 20px;
+
+    font-size: 18px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.menu-item span {
+    flex: 1;
+    min-width: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.menu-item:hover,
+.menu-item.active {
+    background: #367FB5;
+    color: white;
+}
+
+
+/* =========================================
+   5. SIDEBAR BOTTOM
+========================================= */
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding: 15px 10px;
+
+    border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.sidebar-help {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px;
+
+    color: #B8C9DA;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   6. MAIN CONTENT
+========================================= */
+
+.main-content {
+    margin-left: 250px;
+
+    width: calc(100% - 250px);
+    min-width: 0;
+
+    min-height: 100vh;
+}
+
+
+/* =========================================
+   7. TOP HEADER
+========================================= */
+
+.top-header {
+    position: sticky;
+    top: 0;
+
+    width: 100%;
+    min-height: 70px;
+
+    padding: 12px 25px;
+
+    background: #FFFFFF;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid #E5EAF0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-left h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.header-left p {
+    font-size: 14px;
+    color: #8795A5;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 14px;
+    color: #64748B;
+}
+
+
+/* =========================================
+   8. PROFILE
+========================================= */
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    border-left: 1px solid #E5EAF0;
+    padding-left: 20px;
+}
+
+.profile-avatar {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+
+    background: #E5F1FA;
+    color: #367FB5;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-info img {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.profile-text strong {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.profile-text span {
+    font-size: 12px;
+    color: #8998A8;
+}
+
+
+/* =========================================
+   9. MENU TOGGLE
+========================================= */
+
+.menu-toggle {
+    display: none;
+
+    border: none;
+    background: transparent;
+
+    font-size: 22px;
+    color: #173B63;
+}
+
+
+/* =========================================
+   10. ACCOUNT DROPDOWN
+========================================= */
+
+.account-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.account-trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 7px 12px;
+
+    border: none;
+    border-radius: 30px;
+
+    background: #F1F5F9;
+    color: #26384A;
+
+    font-family: Arial, sans-serif;
+    transition: 0.2s;
+}
+
+.account-trigger:hover {
+    background: #E5F1FA;
+}
+
+.account-trigger .profile-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+
+    background: #DCECF8;
+    color: #367FB5;
+
+    border-radius: 50%;
+}
+
+.account-trigger .profile-text {
+    text-align: left;
+    gap: 3px;
+}
+
+.account-trigger .profile-text strong {
+    font-size: 14px;
+    color: #26384A;
+}
+
+.account-trigger .profile-text span {
+    font-size: 12px;
+    color: #8795A5;
+}
+
+.account-arrow {
+    font-size: 11px;
+    color: #64748B;
+    transition: transform 0.2s;
+}
+
+.account-trigger[aria-expanded="true"] .account-arrow {
+    transform: rotate(180deg);
+}
+
+
+/* Dropdown box */
+
+.profile-dropdown {
+    position: absolute;
+
+    top: calc(100% + 10px);
+    right: 0;
+
+    width: 250px;
+
+    background: #FFFFFF;
+    border-radius: 12px;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+
+    overflow: hidden;
+    z-index: 500;
+
+    animation: dropdownShow 0.2s ease;
+}
+
+.profile-dropdown[hidden] {
+    display: none;
+}
+
+
+/* Dropdown user information */
+
+.dropdown-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 18px 16px;
+    background: #F8FAFC;
+}
+
+.dropdown-avatar {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #367FB5;
+    color: white;
+
+    border-radius: 50%;
+    font-size: 20px;
+}
+
+.dropdown-user-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dropdown-user strong {
+    font-size: 14px;
+    color: #26384A;
+}
+
+.dropdown-user span {
+    font-size: 12px;
+    color: #8795A5;
+}
+
+
+/* Dropdown links */
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 14px 16px;
+
+    color: #334155;
+    font-size: 14px;
+
+    border-top: 1px solid #EDF0F4;
+    transition: 0.2s;
+}
+
+.dropdown-item i {
+    width: 18px;
+    text-align: center;
+    color: #64748B;
+}
+
+.dropdown-item:hover {
+    background: #F1F5F9;
+}
+
+
+/* Logout link */
+
+.dropdown-item.logout-link {
+    color: #EF4444;
+}
+
+.dropdown-item.logout-link i {
+    color: #EF4444;
+}
+
+.dropdown-item.logout-link:hover {
+    background: #FEF2F2;
+}
+
+
+/* Dropdown animation */
+
+@keyframes dropdownShow {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================
+   11. RESPONSIVE TABLET
+========================================= */
+
+@media screen and (max-width: 900px) {
+
+    .sidebar {
+        left: -260px;
+    }
+
+    .sidebar.show {
+        left: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .top-header {
+        padding: 12px 20px;
+    }
+}
+
+
+/* =========================================
+   12. RESPONSIVE MOBILE
+========================================= */
+
+@media screen and (max-width: 550px) {
+
+    .top-header {
+        padding: 12px 15px;
+        min-height: 70px;
+    }
+
+    .header-date {
+        display: none;
+    }
+
+    .header-right {
+        gap: 10px;
+    }
+
+    .account-trigger {
+        padding: 5px;
+        gap: 5px;
+        background: transparent;
+    }
+
+    .account-trigger .profile-text {
+        display: none;
+    }
+
+    .account-trigger .profile-avatar {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+    }
+
+    .account-arrow {
+        display: none;
+    }
+
+    .profile-dropdown {
+        width: 230px;
+    }
+
+    .sidebar > .sidebar-logo {
+        height: 70px;
+        min-height: 70px;
+    }
+}

@@ -1,0 +1,739 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Dashboard | HMS</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- PATIENT AVATAR STYLE -->
+    <style>
+        /* =====================================
+           HEADER AVATAR
+        ===================================== */
+
+        .account-trigger .profile-avatar {
+            position: relative;
+
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            max-width: 30px;
+            min-height: 30px;
+
+            flex: 0 0 30px;
+
+            padding: 0;
+            margin: 0;
+
+            border-radius: 50%;
+            overflow: hidden;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #EAF2F8;
+            color: #367FB5;
+
+            box-sizing: border-box;
+        }
+
+        .account-trigger .profile-avatar img {
+            position: absolute;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+            object-position: center;
+
+            border-radius: 50%;
+            display: block;
+
+            z-index: 2;
+        }
+
+        .account-trigger .profile-avatar i {
+            font-size: 15px;
+            z-index: 1;
+        }
+
+
+        /* =====================================
+           DROPDOWN AVATAR
+        ===================================== */
+
+        .dropdown-user .dropdown-avatar {
+            position: relative;
+
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            max-width: 34px;
+            min-height: 34px;
+
+            flex: 0 0 34px;
+
+            padding: 0;
+            margin: 0;
+
+            border-radius: 50%;
+            overflow: hidden;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #EAF2F8;
+            color: #367FB5;
+
+            box-sizing: border-box;
+        }
+
+        .dropdown-user .dropdown-avatar img {
+            position: absolute;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+            object-position: center;
+
+            border-radius: 50%;
+            display: block;
+
+            z-index: 2;
+        }
+
+        .dropdown-user .dropdown-avatar i {
+            font-size: 17px;
+            z-index: 1;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- =====================================
+         SIDEBAR
+    ===================================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+
+            <div class="logo-icon">
+                <img src="images/logo.png" alt="HMS Logo">
+            </div>
+
+        </div>
+
+
+        <!-- MENU -->
+        <nav class="sidebar-menu">
+
+            <p class="menu-title">MENU</p>
+
+            <a href="patient_dashboard.html" class="menu-item active">
+                <i class="fas fa-house"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="profile_feature/profile.php" class="menu-item">
+                <i class="fas fa-user"></i>
+                <span>My Profile</span>
+            </a>
+
+            <a href="appointments_feature/appointments.php" class="menu-item">
+                <i class="fas fa-calendar-check"></i>
+                <span>My Appointments</span>
+            </a>
+
+            <a href="history_feature/history.php" class="menu-item">
+                <i class="fas fa-file-medical"></i>
+                <span>Medical History</span>
+            </a>
+
+            <a href="bills_feature/bills.php" class="menu-item">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>My Bills</span>
+            </a>
+
+        </nav>
+
+
+        <!-- SIDEBAR BOTTOM -->
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-help">
+                <i class="fas fa-circle-question"></i>
+                <span>Patient Support</span>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================
+         MAIN CONTENT
+    ===================================== -->
+
+    <main class="main-content">
+
+        <!-- HEADER -->
+        <header class="top-header">
+
+            <div class="header-left">
+
+                <button class="menu-toggle"
+                        id="menuToggle"
+                        type="button">
+
+                    <i class="fas fa-bars"></i>
+
+                </button>
+
+                <div>
+                    <h3>Patient Dashboard</h3>
+                    <p>Welcome to your health portal</p>
+                </div>
+
+            </div>
+
+
+            <div class="header-right">
+
+                <!-- CURRENT DATE -->
+                <div class="header-date">
+
+                    <i class="far fa-calendar"></i>
+
+                    <span id="currentDate"></span>
+
+                </div>
+
+
+                <!-- =====================================
+                     ACCOUNT MENU
+                ===================================== -->
+
+                <div class="account-menu">
+
+                    <button type="button"
+                            class="account-trigger"
+                            id="accountTrigger"
+                            aria-expanded="false"
+                            aria-controls="profileDropdown">
+
+
+                        <!-- HEADER AVATAR -->
+                        <div class="profile-avatar">
+
+                            <i class="fas fa-user"></i>
+
+                            <img
+                                src="avatar.php"
+                                alt="Patient Avatar"
+                                onerror="this.remove();"
+                            >
+
+                        </div>
+
+
+                        <!-- PATIENT NAME -->
+                        <div class="profile-text">
+
+                            <strong id="patientName">Patient</strong>
+
+                            <span>Patient</span>
+
+                        </div>
+
+
+                        <i class="fas fa-chevron-down account-arrow"></i>
+
+                    </button>
+
+
+                    <!-- =====================================
+                         DROPDOWN MENU
+                    ===================================== -->
+
+                    <div class="profile-dropdown"
+                         id="profileDropdown"
+                         hidden>
+
+
+                        <!-- ACCOUNT INFORMATION -->
+                        <div class="dropdown-user">
+
+
+                            <!-- DROPDOWN AVATAR -->
+                            <div class="dropdown-avatar">
+
+                                <i class="fas fa-user"></i>
+
+                                <img
+                                    src="avatar.php"
+                                    alt="Patient Avatar"
+                                    onerror="this.remove();"
+                                >
+
+                            </div>
+
+
+                            <!-- USER INFORMATION -->
+                            <div class="dropdown-user-text">
+
+                                <strong id="dropdownPatientName">
+                                    Patient
+                                </strong>
+
+                                <span>Patient account</span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ACCOUNT MANAGEMENT -->
+                        <a href="profile_feature/profile.php"
+                           class="dropdown-item">
+
+                            <i class="fas fa-user-gear"></i>
+
+                            <span>Account management</span>
+
+                        </a>
+
+
+                        <!-- LOGOUT -->
+                        <a href="logout.php"
+                           class="dropdown-item logout-link">
+
+                            <i class="fas fa-right-from-bracket"></i>
+
+                            <span>Log out</span>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================
+             DASHBOARD CONTENT
+        ===================================== -->
+
+        <div class="dashboard-content">
+
+
+            <!-- WELCOME SECTION -->
+            <section class="welcome-section">
+
+                <div>
+
+                    <h1>
+                        Welcome, <span id="welcomeName">Patient</span>!
+                    </h1>
+
+                    <p>
+                        Here is your health overview.
+                    </p>
+
+                </div>
+
+                <div class="welcome-icon">
+                    <i class="fas fa-heart-pulse"></i>
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 STATISTICS
+            ===================================== -->
+
+            <section class="stats-grid">
+
+
+                <!-- TOTAL APPOINTMENTS -->
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+
+                    <div class="stat-info">
+
+                        <p>Total Appointments</p>
+
+                        <h2 id="totalAppointments">0</h2>
+
+                        <span>All appointments</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- UPCOMING APPOINTMENTS -->
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+
+                    <div class="stat-info">
+
+                        <p>Upcoming Appointments</p>
+
+                        <h2 id="upcomingAppointments">0</h2>
+
+                        <span>Pending or confirmed</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- COMPLETED VISITS -->
+                <div class="stat-card">
+
+                    <div class="stat-icon purple">
+                        <i class="fas fa-user-doctor"></i>
+                    </div>
+
+                    <div class="stat-info">
+
+                        <p>Completed Visits</p>
+
+                        <h2 id="completedVisits">0</h2>
+
+                        <span>Completed appointments</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- UNPAID BILLS -->
+                <div class="stat-card">
+
+                    <div class="stat-icon orange">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+
+                    <div class="stat-info">
+
+                        <p>Unpaid Bills</p>
+
+                        <h2 id="unpaidBills">0</h2>
+
+                        <span>Outstanding bills</span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 MAIN GRID
+            ===================================== -->
+
+            <section class="dashboard-grid">
+
+
+                <!-- UPCOMING APPOINTMENTS -->
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <h3>Upcoming Appointments</h3>
+                            <p>Your latest appointment information</p>
+                        </div>
+
+                        <a href="appointments_feature/appointments.php">
+
+                            View All
+
+                            <i class="fas fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Doctor</th>
+                                    <th>Date & Time</th>
+                                    <th>Reason</th>
+                                    <th>Status</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="appointmentTable">
+
+                                <tr>
+
+                                    <td colspan="4" class="empty-message">
+                                        Loading appointments...
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUICK ACTIONS -->
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <h3>Quick Actions</h3>
+                            <p>Access your patient features</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="quick-actions">
+
+
+                        <!-- MY PROFILE -->
+                        <a href="profile_feature/profile.php"
+                           class="action-item">
+
+                            <div class="action-icon blue">
+                                <i class="fas fa-user"></i>
+                            </div>
+
+                            <div>
+
+                                <strong>My Profile</strong>
+
+                                <span>
+                                    View and update your information
+                                </span>
+
+                            </div>
+
+                            <i class="fas fa-chevron-right"></i>
+
+                        </a>
+
+
+                        <!-- MY APPOINTMENTS -->
+                        <a href="appointments_feature/appointments.php"
+                           class="action-item">
+
+                            <div class="action-icon green">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+
+                            <div>
+
+                                <strong>My Appointments</strong>
+
+                                <span>
+                                    Manage your appointments
+                                </span>
+
+                            </div>
+
+                            <i class="fas fa-chevron-right"></i>
+
+                        </a>
+
+
+                        <!-- MEDICAL HISTORY -->
+                        <a href="history_feature/history.php"
+                           class="action-item">
+
+                            <div class="action-icon purple">
+                                <i class="fas fa-file-medical"></i>
+                            </div>
+
+                            <div>
+
+                                <strong>Medical History</strong>
+
+                                <span>
+                                    View your medical records
+                                </span>
+
+                            </div>
+
+                            <i class="fas fa-chevron-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- FOOTER -->
+            <footer class="dashboard-footer">
+
+                Hospital Management System - Patient Portal
+
+            </footer>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================
+     DASHBOARD JAVASCRIPT
+===================================== -->
+
+<script src="js/dashboard.js"></script>
+
+
+<!-- =====================================
+     ACCOUNT DROPDOWN JAVASCRIPT
+===================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const accountTrigger =
+        document.getElementById("accountTrigger");
+
+    const profileDropdown =
+        document.getElementById("profileDropdown");
+
+    const patientName =
+        document.getElementById("patientName");
+
+    const dropdownPatientName =
+        document.getElementById("dropdownPatientName");
+
+
+    if (!accountTrigger || !profileDropdown) {
+        return;
+    }
+
+
+    // =====================================
+    // OPEN AND CLOSE DROPDOWN
+    // =====================================
+
+    accountTrigger.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        const isOpen = !profileDropdown.hidden;
+
+        profileDropdown.hidden = isOpen;
+
+        accountTrigger.setAttribute(
+            "aria-expanded",
+            String(!isOpen)
+        );
+
+
+        // Update patient name in dropdown
+        if (patientName && dropdownPatientName) {
+
+            dropdownPatientName.textContent =
+                patientName.textContent;
+
+        }
+
+    });
+
+
+    // =====================================
+    // CLOSE WHEN CLICKING OUTSIDE
+    // =====================================
+
+    document.addEventListener("click", function (event) {
+
+        if (!event.target.closest(".account-menu")) {
+
+            profileDropdown.hidden = true;
+
+            accountTrigger.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+    });
+
+
+    // =====================================
+    // CLOSE WHEN PRESSING ESCAPE
+    // =====================================
+
+    document.addEventListener("keydown", function (event) {
+
+        if (event.key === "Escape") {
+
+            profileDropdown.hidden = true;
+
+            accountTrigger.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>

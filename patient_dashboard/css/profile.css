@@ -1,0 +1,506 @@
+
+/* =========================================
+   1. PROFILE CONTENT
+========================================= */
+
+.profile-content {
+    padding: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.page-heading {
+    margin-bottom: 25px;
+}
+
+.page-heading h1 {
+    color: #173B63;
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.page-heading p {
+    color: #8795A5;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   2. BACK TO DASHBOARD BUTTON
+========================================= */
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 22px;
+    padding: 11px 18px;
+
+    background: #367FB5;
+    color: #FFFFFF;
+
+    border-radius: 8px;
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+.back-button:hover {
+    background: #286A9D;
+}
+
+
+/* =========================================
+   3. PROFILE CARD
+========================================= */
+
+.profile-card {
+    background: #FFFFFF;
+
+    padding: 30px;
+    margin-bottom: 25px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 3px 12px rgba(20, 50, 80, 0.05);
+}
+
+.card-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 8px;
+}
+
+.card-heading i {
+    color: #367FB5;
+    font-size: 20px;
+}
+
+.card-heading h2 {
+    color: #173B63;
+    font-size: 19px;
+}
+
+.description {
+    color: #8795A5;
+    font-size: 14px;
+
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   4. MESSAGE
+========================================= */
+
+.message {
+    padding: 13px 16px;
+    margin-bottom: 22px;
+
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.message.success {
+    background: #E3F6EB;
+    color: #237442;
+    border: 1px solid #BDE8CC;
+}
+
+.message.error {
+    background: #FCE8E8;
+    color: #B42318;
+    border: 1px solid #F5C6C6;
+}
+
+
+/* =========================================
+   5. FORM GRID
+========================================= */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    color: #26384A;
+    font-size: 14px;
+    font-weight: 600;
+
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 14px;
+
+    border: 1px solid #D5E0EB;
+    border-radius: 8px;
+
+    font-size: 14px;
+    color: #26384A;
+
+    outline: none;
+    transition: 0.2s;
+
+    background: #FFFFFF;
+}
+
+.form-group input:focus {
+    border-color: #367FB5;
+    box-shadow: 0 0 0 3px rgba(54, 127, 181, 0.10);
+}
+
+.form-group input:disabled {
+    background: #EDF1F5;
+    color: #687789;
+    cursor: not-allowed;
+}
+
+.password-note {
+    color: #8795A5;
+    font-size: 12px;
+    margin-top: 7px;
+}
+
+
+/* =========================================
+   6. FORM BUTTONS
+========================================= */
+
+.form-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    margin-top: 25px;
+}
+
+.form-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 12px 22px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.save-button {
+    background: #367FB5;
+    color: #FFFFFF;
+}
+
+.save-button:hover {
+    background: #286A9D;
+}
+
+.reset-button {
+    background: #E6EDF4;
+    color: #24445F;
+}
+
+.reset-button:hover {
+    background: #D6E2ED;
+}
+
+
+/* =========================================
+   7. AVATAR UPLOAD SECTION
+========================================= */
+
+.avatar-upload-container {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+/* Large avatar preview */
+
+.avatar-preview {
+    width: 110px !important;
+    height: 110px !important;
+    min-width: 110px;
+    max-width: 110px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    background: #EAF2F8;
+    border: 3px solid #D5E6F3;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-preview img {
+    width: 100% !important;
+    height: 100% !important;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    object-fit: cover;
+    border-radius: 50%;
+
+    display: block;
+}
+
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #367FB5;
+    font-size: 40px;
+}
+
+.avatar-upload-details {
+    flex: 1;
+    min-width: 250px;
+}
+
+
+/* =========================================
+   8. ACCOUNT HEADER AVATAR
+========================================= */
+
+/* Small circular avatar beside username */
+
+.account-trigger .profile-avatar {
+    width: 38px !important;
+    height: 38px !important;
+
+    min-width: 38px !important;
+    max-width: 38px !important;
+
+    flex: 0 0 38px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #EAF2F8;
+    color: #367FB5;
+
+    position: relative;
+}
+
+.account-trigger .profile-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+
+    max-width: 100% !important;
+    max-height: 100% !important;
+
+    object-fit: cover;
+    border-radius: 50%;
+
+    display: block;
+}
+
+
+/* =========================================
+   9. DROPDOWN AVATAR
+========================================= */
+
+.dropdown-user .dropdown-avatar {
+    width: 42px !important;
+    height: 42px !important;
+
+    min-width: 42px !important;
+    max-width: 42px !important;
+
+    flex: 0 0 42px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #EAF2F8;
+    color: #367FB5;
+}
+
+.dropdown-user .dropdown-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+
+    max-width: 100% !important;
+    max-height: 100% !important;
+
+    object-fit: cover;
+    border-radius: 50%;
+
+    display: block;
+}
+
+
+/* =========================================
+   10. RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .profile-content {
+        padding: 20px 15px;
+    }
+
+    .profile-card {
+        padding: 22px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full-width {
+        grid-column: auto;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    .form-button {
+        width: 100%;
+    }
+
+    .avatar-upload-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .avatar-upload-details {
+        width: 100%;
+        min-width: 0;
+    }
+
+}
+
+/* =========================================
+   FIX: HEADER AVATAR SIZE
+========================================= */
+
+.top-header .header-right .account-menu .account-trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.top-header .header-right .account-menu .account-trigger .profile-avatar {
+    position: relative !important;
+
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+
+    flex: 0 0 30px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    border-radius: 50% !important;
+    overflow: hidden !important;
+
+    display: block !important;
+    box-sizing: border-box !important;
+
+    background: #EAF2F8;
+}
+
+.top-header .header-right .account-menu .account-trigger .profile-avatar img {
+    position: absolute !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    object-fit: cover !important;
+
+    border-radius: 50% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    display: block !important;
+}
+
+/* Dropdown avatar */
+
+.top-header .dropdown-user .dropdown-avatar {
+    position: relative !important;
+
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+
+    flex: 0 0 34px !important;
+
+    padding: 0 !important;
+    overflow: hidden !important;
+    border-radius: 50% !important;
+
+    box-sizing: border-box !important;
+}
+
+.top-header .dropdown-user .dropdown-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+
+    object-fit: cover !important;
+    border-radius: 50% !important;
+
+    display: block !important;
+}
+
