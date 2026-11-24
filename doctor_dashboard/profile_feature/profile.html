@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Panel - My Profile</title>
+
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="profile.css">
+
+    <script src="../js/auth.js" defer></script>
+</head>
+
+<!-- Icon SVG cho trang này -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-user"   viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-5.3 0-8 2.7-8 4v2h16v-2c0-1.3-2.7-4-8-4z"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4zM9 3 7.17 5H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.17L15 3H9zm3 14a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></symbol>
+    <symbol id="i-save"   viewBox="0 0 24 24"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4zm-5 16a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm3-10H5V5h10v4z"/></symbol>
+    <symbol id="i-lock"   viewBox="0 0 24 24"><path d="M18 8h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zM12 17a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3.1-9H8.9V6a3.1 3.1 0 0 1 6.2 0v2z"/></symbol>
+  </defs>
+</svg>
+
+<body data-page="profile">
+
+<div class="wrapper">
+
+    <aside id="sidebar"></aside>
+
+    <div class="main">
+
+        <header id="topbar"></header>
+
+        <main id="content">
+
+            <div class="profile-page">
+
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div>
+                        <h2>My Profile</h2>
+                        <p>View and update your personal information.</p>
+                    </div>
+                </div>
+
+                <!-- Loading -->
+                <div id="loadingMsg" class="loading-msg">Loading profile...</div>
+
+                <!-- Profile content (ẩn khi đang load) -->
+                <div id="profileContent" style="display:none;">
+
+                    <!-- Card: Avatar + Info cơ bản -->
+                    <div class="profile-card">
+                        <div class="avatar-section">
+                            <div class="avatar-wrap">
+                                <img id="profileAvatar" src="" alt="Avatar" class="avatar-img">
+                                <button class="avatar-overlay" id="btnPickAvatar" type="button" title="Change photo">
+                                    <svg class="icon" width="22" height="22"><use href="#i-camera"/></svg>
+                                </button>
+                            </div>
+                            <input type="file" id="avatarFile" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none">
+                            <div class="avatar-actions">
+                                <button class="btn btn-secondary" id="btnRemoveAvatar" type="button">Remove Photo</button>
+                            </div>
+                            <p id="avatarMsg" class="msg"></p>
+                        </div>
+
+                        <div class="info-section">
+                            <h3 id="profileName">...</h3>
+                            <p id="profileSpec" class="info-spec">...</p>
+                            <div class="info-badges">
+                                <span class="badge"><strong>Room:</strong> <span id="profileRoom">-</span></span>
+                                <span class="badge"><strong>Email:</strong> <span id="profileEmail">-</span></span>
+                                <span class="badge"><strong>Phone:</strong> <span id="profilePhone">-</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card: Chỉnh sửa thông tin -->
+                    <div class="form-card">
+                        <div class="form-card-title">
+                            <svg class="icon" width="20" height="20"><use href="#i-user"/></svg>
+                            Edit Information
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fldFullName">Full Name <span class="req">*</span></label>
+                                <input type="text" id="fldFullName" maxlength="100" placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="fldSpec">Specialization <span class="req">*</span></label>
+                                <select id="fldSpec">
+                                    <option value="">-- Select --</option>
+                                    <option value="General Practice">General Practice</option>
+                                    <option value="Cardiology">Cardiology</option>
+                                    <option value="Neurology">Neurology</option>
+                                    <option value="Orthopedics">Orthopedics</option>
+                                    <option value="Pediatrics">Pediatrics</option>
+                                    <option value="Dermatology">Dermatology</option>
+                                    <option value="Ophthalmology">Ophthalmology</option>
+                                    <option value="Gastroenterology">Gastroenterology</option>
+                                    <option value="Oncology">Oncology</option>
+                                    <option value="Radiology">Radiology</option>
+                                    <option value="Psychiatry">Psychiatry</option>
+                                    <option value="Surgery">Surgery</option>
+                                    <option value="Urology">Urology</option>
+                                    <option value="Endocrinology">Endocrinology</option>
+                                    <option value="Nephrology">Nephrology</option>
+                                    <option value="Pulmonology">Pulmonology</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fldQualification">Qualification</label>
+                                <input type="text" id="fldQualification" maxlength="100" placeholder="e.g. MBBS, MD, PhD">
+                            </div>
+                            <div class="form-group">
+                                <label for="fldRoom">Room Number</label>
+                                <input type="number" id="fldRoom" min="1" max="9999" placeholder="e.g. 101">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email <span class="readonly-label">(read-only)</span></label>
+                                <input type="text" id="fldEmail" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone <span class="readonly-label">(read-only)</span></label>
+                                <input type="text" id="fldPhone" disabled>
+                            </div>
+                        </div>
+
+                        <p id="profileMsg" class="msg"></p>
+
+                        <div class="form-actions">
+                            <button class="btn btn-primary" id="btnSaveProfile" type="button">
+                                <svg class="icon" width="17" height="17"><use href="#i-save"/></svg>
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card: Đổi mật khẩu -->
+                    <div class="form-card">
+                        <div class="form-card-title">
+                            <svg class="icon" width="20" height="20"><use href="#i-lock"/></svg>
+                            Change Password
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pwCurrent">Current Password <span class="req">*</span></label>
+                                <input type="password" id="pwCurrent" placeholder="Enter current password">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pwNew">New Password <span class="req">*</span></label>
+                                <input type="password" id="pwNew" placeholder="At least 6 characters">
+                            </div>
+                            <div class="form-group">
+                                <label for="pwConfirm">Confirm New Password <span class="req">*</span></label>
+                                <input type="password" id="pwConfirm" placeholder="Repeat new password">
+                            </div>
+                        </div>
+
+                        <p id="pwMsg" class="msg"></p>
+
+                        <div class="form-actions">
+                            <button class="btn btn-primary" id="btnChangePw" type="button">
+                                <svg class="icon" width="17" height="17"><use href="#i-lock"/></svg>
+                                Change Password
+                            </button>
+                        </div>
+                    </div>
+
+                </div><!-- /profileContent -->
+
+            </div><!-- /profile-page -->
+
+        </main>
+
+    </div>
+
+</div>
+
+<script src="../js/layout.js"></script>
+<script src="profile.js"></script>
+
+</body>
+</html>

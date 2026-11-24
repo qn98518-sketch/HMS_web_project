@@ -26,6 +26,7 @@
         { key: "appointments", label: "My Appointments",   icon: "calendar",   href: "appointments_feature/index.html" },
         { key: "patients",     label: "My Patients",       icon: "patient",    href: "patients_feature/index.html" },
         { key: "treatment",    label: "Treatment Records",  icon: "record",     href: "treatment_feature/index.html" },
+        { key: "profile",      label: "My Profile",        icon: "doctor",    href: "profile_feature/profile.html" },
     ];
 
     // Icon SVG nhúng sẵn (giống Admin, không cần CDN)
